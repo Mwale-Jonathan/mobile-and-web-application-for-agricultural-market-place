@@ -4,106 +4,110 @@ import { cn } from "@/lib/utils";
 import { Tabs } from "expo-router";
 import React from "react";
 import { Text, View } from "react-native";
+import { StatusBar } from "expo-status-bar";
 
-function TabIcon({
-  name,
-  focused,
-}: {
-  name: AppIconName;
-  focused: boolean;
-}) {
-  return (
-    <View className="items-center justify-center">
-      <AppIcon
-        name={name}
-        size={23}
-        color={focused ? "#16A34A" : "#6B7280"}
-        style={{ opacity: focused ? 1 : 0.68 }}
-      />
-    </View>
-  );
+function TabIcon({ name, focused }: { name: AppIconName; focused: boolean }) {
+    return (
+        <View className="items-center justify-center">
+            <AppIcon
+                name={name}
+                size={23}
+                color={focused ? "#16A34A" : "#6B7280"}
+                style={{ opacity: focused ? 1 : 0.68 }}
+            />
+        </View>
+    );
 }
 
 export default function TabLayout() {
-  const { currentUser } = React.use(AppContext);
-  const isFarmer = currentUser?.role === "farmer";
+    const { currentUser } = React.use(AppContext);
+    const isFarmer = currentUser?.role === "farmer";
 
-  return (
-    <Tabs
-      screenOptions={{
-        headerShown: false,
+    return (
+        <Tabs
+            screenOptions={{
+                headerShown: false,
 
-        // 1. Style the Label using NativeWind classes instead of tabBarLabelStyle
-        tabBarLabel: ({ focused, children }) => (
-          <Text
-            className={cn(
-              "pb-1 text-xs font-semibold",
-              focused ? "text-primary" : "text-muted-foreground",
-            )}
-          >
-            {children}
-          </Text>
-        ),
+                // 1. Style the Label using NativeWind classes instead of tabBarLabelStyle
+                tabBarLabel: ({ focused, children }) => (
+                    <Text
+                        className={cn(
+                            "pb-1 text-xs font-semibold",
+                            focused ? "text-primary" : "text-muted-foreground",
+                        )}
+                    >
+                        {children}
+                    </Text>
+                ),
 
-        // 2. Style the TabBar background & borders using NativeWind instead of tabBarStyle
-        tabBarBackground: () => (
-          <View className="absolute inset-0 border-t border-border bg-card" />
-        ),
+                // 2. Style the TabBar background & borders using NativeWind instead of tabBarStyle
+                tabBarBackground: () => (
+                    <View className="absolute inset-0 border-t border-border bg-card" />
+                ),
 
-        // 3. Optional layout adjustment: hides default background/borders so your custom background renders perfectly
-        tabBarStyle: {
-          borderTopWidth: 0,
-          elevation: 0,
-        },
-      }}
-    >
-      <Tabs.Screen
-        name="(home)"
-        options={{
-          title: "Home",
-          tabBarIcon: ({ focused }) => (
-            <TabIcon name="home-outline" focused={focused} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="(products)"
-        options={{
-          title: "Products",
-          tabBarIcon: ({ focused }) => (
-            <TabIcon name="basket-outline" focused={focused} />
-          ),
-          href: isFarmer ? null : "/(tabs)/(products)",
-        }}
-      />
-      <Tabs.Screen
-        name="(farmer)"
-        options={{
-          title: "My Farm",
-          tabBarIcon: ({ focused }) => (
-            <TabIcon name="storefront-outline" focused={focused} />
-          ),
-          href: isFarmer ? "/(tabs)/(farmer)" : null,
-        }}
-      />
-      <Tabs.Screen
-        name="(map)"
-        options={{
-          title: "Nearby",
-          tabBarIcon: ({ focused }) => (
-            <TabIcon name="location-outline" focused={focused} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="(settings)"
-        options={{
-          title: "Settings",
-          tabBarIcon: ({ focused }) => (
-            <TabIcon name="settings-outline" focused={focused} />
-          ),
-        }}
-      />
-    </Tabs>
-  );
+                // 3. Optional layout adjustment: hides default background/borders so your custom background renders perfectly
+                tabBarStyle: {
+                    borderTopWidth: 0,
+                    elevation: 0,
+                },
+            }}
+        >
+            <Tabs.Screen
+                name="(home)"
+                options={{
+                    title: "Home",
+                    tabBarIcon: ({ focused }) => (
+                        <TabIcon
+                            name={focused ? "home" : "home-outline"}
+                            focused={focused}
+                        />
+                    ),
+                }}
+            />
+            <Tabs.Screen
+                name="(products)"
+                options={{
+                    title: "Products",
+                    tabBarIcon: ({ focused }) => (
+                        <TabIcon
+                            name={focused ? "basket" : "basket-outline"}
+                            focused={focused}
+                        />
+                    ),
+                    href: isFarmer ? null : "/(tabs)/(products)",
+                }}
+            />
+            <Tabs.Screen
+                name="(farmer)"
+                options={{
+                    title: "My Farm",
+                    tabBarIcon: ({ focused }) => (
+                        <TabIcon name="storefront-outline" focused={focused} />
+                    ),
+                    href: isFarmer ? "/(tabs)/(farmer)" : null,
+                }}
+            />
+            <Tabs.Screen
+                name="(map)"
+                options={{
+                    title: "Nearby",
+                    tabBarIcon: ({ focused }) => (
+                        <TabIcon name="location-outline" focused={focused} />
+                    ),
+                }}
+            />
+            <Tabs.Screen
+                name="(settings)"
+                options={{
+                    title: "Settings",
+                    tabBarIcon: ({ focused }) => (
+                        <TabIcon
+                            name={focused ? "settings" : "settings-outline"}
+                            focused={focused}
+                        />
+                    ),
+                }}
+            />
+        </Tabs>
+    );
 }
