@@ -7,6 +7,7 @@ import { formatDate, formatPhone, getInitials } from "@/lib/helpers";
 import { ProductCard } from "@/components/product-card";
 import { ContactButtons } from "@/components/contact-buttons";
 import { EmptyState } from "@/components/empty-state";
+import { AvatarInitials } from "@/components/ui";
 import { cn } from "@/lib/utils";
 
 export default function SupplierProfileScreen() {
@@ -33,13 +34,12 @@ export default function SupplierProfileScreen() {
   return (
     <ScrollView className="flex-1 bg-muted" contentContainerClassName="pb-10">
       <View className="items-center bg-card p-6">
-        <View
-          className="mb-3 size-20 items-center justify-center rounded-full"
-          style={{ backgroundColor: supplier.avatarColor }}
-        >
-          <Text className="text-[32px] font-extrabold text-primary-foreground">
-            {getInitials(supplier.name)}
-          </Text>
+        <View className="mb-3">
+          <AvatarInitials
+            name={supplier.name}
+            color={supplier.avatarColor}
+            size="xl"
+          />
         </View>
         <Text className="text-2xl font-extrabold text-foreground">
           {supplier.name}

@@ -14,6 +14,8 @@ export interface User {
   province: string;
   joinedDate: string;
   avatarColor: string;
+  latitude?: number;
+  longitude?: number;
 }
 
 export interface Product {

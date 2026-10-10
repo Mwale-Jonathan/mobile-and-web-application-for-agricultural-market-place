@@ -17,6 +17,8 @@ interface AppContextType {
   logout: () => void;
   register: (user: Omit<User, "id" | "joinedDate" | "avatarColor">) => void;
   switchRole: (role: UserRole) => void;
+  updateUser: (updates: Partial<Omit<User, "id" | "joinedDate">>) => void;
+  updatePassword: (currentPassword: string, newPassword: string) => boolean;
 
   // Products
   products: Product[];
@@ -100,6 +102,26 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       setAllUsers((prev) => [...prev, newUser]);
       setCurrentUser(newUser);
       setIsLoggedIn(true);
+    },
+    []
+  );
+
+  const updateUser = useCallback(
+    (updates: Partial<Omit<User, "id" | "joinedDate">>) => {
+      if (!currentUser) return;
+      const updated = { ...currentUser, ...updates };
+      setCurrentUser(updated);
+      setAllUsers((prev) =>
+        prev.map((u) => (u.id === updated.id ? updated : u))
+      );
+    },
+    [currentUser]
+  );
+
+  const updatePassword = useCallback(
+    (_currentPassword: string, newPassword: string): boolean => {
+      if (!_currentPassword.trim() || !newPassword.trim()) return false;
+      return true; // mock – always succeeds in demo
     },
     []
   );
@@ -207,6 +229,8 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         logout,
         register,
         switchRole,
+        updateUser,
+        updatePassword,
         products,
         addProduct,
         updateProduct,

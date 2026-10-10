@@ -1,5 +1,6 @@
 import { AppIcon } from "@/components/app-icon";
 import { AppLogoIcon } from "@/components/logo-icon";
+import { AppButton, FormField } from "@/components/ui";
 import { Colors } from "@/constants";
 import { AppContext } from "@/context/app-context";
 import { Link, router } from "expo-router";
@@ -61,43 +62,30 @@ export default function LoginScreen() {
 
                 {/* Form */}
                 <View className="gap-4">
-                    <View>
-                        <Text className="mb-2 text-[13px] font-semibold text-foreground">
-                            Email
-                        </Text>
-                        <TextInput
-                            value={email}
-                            onChangeText={setEmail}
-                            placeholder="Enter your email"
-                            placeholderTextColor={Colors.textTertiary}
-                            keyboardType="email-address"
-                            autoCapitalize="none"
-                            className="rounded-[10px] border border-border bg-card px-4 py-3 text-[15px] text-foreground"
-                        />
-                    </View>
+                    <FormField
+                        label="Email"
+                        value={email}
+                        onChangeText={setEmail}
+                        placeholder="Enter your email"
+                        keyboardType="email-address"
+                        autoCapitalize="none"
+                        required
+                    />
 
-                    <View>
-                        <Text className="mb-2 text-[13px] font-semibold text-foreground">
-                            Password
-                        </Text>
-                        <TextInput
-                            value={password}
-                            onChangeText={setPassword}
-                            placeholder="Enter your password"
-                            placeholderTextColor={Colors.textTertiary}
-                            secureTextEntry
-                            className="rounded-[10px] border border-border bg-card px-4 py-3 text-[15px] text-foreground"
-                        />
-                    </View>
+                    <FormField
+                        label="Password"
+                        value={password}
+                        onChangeText={setPassword}
+                        placeholder="Enter your password"
+                        secureTextEntry
+                        required
+                    />
 
-                    <Pressable
+                    <AppButton
+                        label="Log In"
                         onPress={handleLogin}
-                        className="mt-2 items-center rounded-[10px] bg-primary py-4 active:opacity-90"
-                    >
-                        <Text className="text-[17px] font-bold text-primary-foreground">
-                            Log In
-                        </Text>
-                    </Pressable>
+                        className="mt-2"
+                    />
 
                     <Link href="/(auth)/register" asChild>
                         <Pressable className="items-center py-3">

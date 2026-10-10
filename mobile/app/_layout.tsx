@@ -48,6 +48,18 @@ export default function RootLayout() {
           name="predictions"
           options={{ headerShown: true, title: "Price Predictions" }}
         />
+        <Stack.Screen
+          name="profile/edit"
+          options={{ headerShown: true, title: "Edit Profile" }}
+        />
+        <Stack.Screen
+          name="profile/change-password"
+          options={{ headerShown: true, title: "Change Password" }}
+        />
+        <Stack.Screen
+          name="profile/manage-location"
+          options={{ headerShown: true, title: "Manage Location" }}
+        />
         <Stack.Screen name="+not-found" />
       </Stack>
     </AppProvider>

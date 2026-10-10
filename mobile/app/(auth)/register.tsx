@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import {
   View,
   Text,
-  TextInput,
   Pressable,
   ScrollView,
   Alert,
@@ -10,9 +9,10 @@ import {
 import { Link, router } from "expo-router";
 import { AppIcon } from "@/components/app-icon";
 import { AppContext } from "@/context/app-context";
-import { Colors } from "@/constants";
 import type { UserRole } from "@/types";
 import { cn } from "@/lib/utils";
+import { AppButton, FormField } from "@/components/ui";
+import { LocationPickerModal, type LocationResult } from "@/components/LocationPickerModal";
 
 export default function RegisterScreen() {
   const { register } = React.use(AppContext);
@@ -22,6 +22,10 @@ export default function RegisterScreen() {
   const [password, setPassword] = useState("");
   const [role, setRole] = useState<UserRole>("consumer");
   const [location, setLocation] = useState("");
+  const [province, setProvince] = useState("Lusaka");
+  const [latitude, setLatitude] = useState<number | undefined>();
+  const [longitude, setLongitude] = useState<number | undefined>();
+  const [pickerVisible, setPickerVisible] = useState(false);
 
   const handleRegister = () => {
     if (!name.trim() || !email.trim() || !phone.trim() || !password.trim()) {
@@ -34,9 +38,19 @@ export default function RegisterScreen() {
       phone: phone.trim(),
       role,
       location: location.trim() || "Lusaka",
-      province: "Lusaka",
+      province: province || "Lusaka",
+      latitude,
+      longitude,
     });
     router.replace("/(tabs)/(home)");
+  };
+
+  const handleLocationPicked = (result: LocationResult) => {
+    setLocation(result.locationName);
+    setProvince(result.province);
+    setLatitude(result.latitude);
+    setLongitude(result.longitude);
+    setPickerVisible(false);
   };
 
   return (
@@ -94,71 +108,76 @@ export default function RegisterScreen() {
 
         {/* Form fields */}
         <View className="gap-4">
-          {[
-            {
-              label: "Full Name",
-              value: name,
-              set: setName,
-              placeholder: "Enter your full name",
-              type: "default" as const,
-            },
-            {
-              label: "Email",
-              value: email,
-              set: setEmail,
-              placeholder: "Enter your email",
-              type: "email-address" as const,
-            },
-            {
-              label: "Phone Number",
-              value: phone,
-              set: setPhone,
-              placeholder: "+260...",
-              type: "phone-pad" as const,
-            },
-            {
-              label: "Location",
-              value: location,
-              set: setLocation,
-              placeholder: "e.g. Lusaka, Chongwe, Kafue",
-              type: "default" as const,
-            },
-            {
-              label: "Password",
-              value: password,
-              set: setPassword,
-              placeholder: "Create a password",
-              type: "default" as const,
-              secure: true,
-            },
-          ].map((field) => (
-            <View key={field.label}>
-              <Text className="mb-2 text-[13px] font-semibold text-foreground">
-                {field.label}
-              </Text>
-              <TextInput
-                value={field.value}
-                onChangeText={field.set}
-                placeholder={field.placeholder}
-                placeholderTextColor={Colors.textTertiary}
-                keyboardType={field.type}
-                secureTextEntry={field.secure}
-                autoCapitalize={
-                  field.type === "email-address" ? "none" : "words"
-                }
-                className="rounded-[10px] border border-border bg-card px-4 py-3 text-[15px] text-foreground"
-              />
-            </View>
-          ))}
+          <FormField
+            label="Full Name"
+            value={name}
+            onChangeText={setName}
+            placeholder="Enter your full name"
+            required
+          />
 
-          <Pressable
-            onPress={handleRegister}
-            className="mt-2 items-center rounded-[10px] bg-primary py-4 active:opacity-90"
-          >
-            <Text className="text-[17px] font-bold text-primary-foreground">
-              Create Account
+          <FormField
+            label="Email"
+            value={email}
+            onChangeText={setEmail}
+            placeholder="Enter your email"
+            keyboardType="email-address"
+            autoCapitalize="none"
+            required
+          />
+
+          <FormField
+            label="Phone Number"
+            value={phone}
+            onChangeText={setPhone}
+            placeholder="+260..."
+            keyboardType="phone-pad"
+            required
+          />
+
+          {/* Location with Map Picker */}
+          <View>
+            <Text className="mb-2 text-[13px] font-semibold text-foreground">
+              Location
             </Text>
-          </Pressable>
+            <Pressable
+              onPress={() => setPickerVisible(true)}
+              className="flex-row items-center gap-3 rounded-[10px] border border-border bg-card px-4 py-3.5 active:bg-muted"
+            >
+              <AppIcon name="location-outline" size={20} color="#16A34A" />
+              <View className="flex-1">
+                <Text
+                  className={cn(
+                    "text-[15px]",
+                    location ? "text-foreground font-medium" : "text-muted-foreground",
+                  )}
+                >
+                  {location ? `${location}, ${province}` : "Find your place on map..."}
+                </Text>
+                {latitude && longitude && (
+                  <Text className="text-[11px] text-muted-foreground mt-0.5">
+                    {latitude.toFixed(4)}, {longitude.toFixed(4)}
+                  </Text>
+                )}
+              </View>
+              <AppIcon name="map-outline" size={18} color="#6B7280" />
+            </Pressable>
+          </View>
+
+          <FormField
+            label="Password"
+            value={password}
+            onChangeText={setPassword}
+            placeholder="Create a password"
+            secureTextEntry
+            required
+          />
+
+          <AppButton
+            label="Create Account"
+            onPress={handleRegister}
+            className="mt-2"
+          />
 
           <Link href="/(auth)/login" asChild>
             <Pressable className="items-center py-3">
@@ -170,6 +189,14 @@ export default function RegisterScreen() {
           </Link>
         </View>
       </View>
+
+      <LocationPickerModal
+        visible={pickerVisible}
+        onClose={() => setPickerVisible(false)}
+        onConfirm={handleLocationPicked}
+        initialLatitude={latitude}
+        initialLongitude={longitude}
+      />
     </ScrollView>
   );
 }

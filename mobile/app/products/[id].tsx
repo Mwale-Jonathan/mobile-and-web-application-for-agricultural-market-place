@@ -1,15 +1,17 @@
+import * as Location from "expo-location";
 import { AppIcon } from "@/components/app-icon";
 import { AvailabilityBadge } from "@/components/availability-badge";
 import { ContactButtons } from "@/components/contact-buttons";
 import { EmptyState } from "@/components/empty-state";
+import { AvatarInitials } from "@/components/ui";
 import { AppContext } from "@/context/app-context";
 import { CATEGORIES } from "@/data/mock-data";
-import { formatDate, formatPrice, getInitials } from "@/lib/helpers";
+import { formatDate, formatPrice } from "@/lib/helpers";
 import { cn } from "@/lib/utils";
 import { Image } from "expo-image";
 import { router, useLocalSearchParams } from "expo-router";
-import React from "react";
-import { Pressable, ScrollView, Text, View } from "react-native";
+import React, { useState } from "react";
+import { Alert, Linking, Platform, Pressable, ScrollView, Text, View } from "react-native";
 
 export default function ProductDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -39,6 +41,8 @@ export default function ProductDetailScreen() {
   const category = CATEGORIES.find((c) => c.id === product.categoryId);
   const saved = isSaved(product.id);
 
+  const [navigating, setNavigating] = useState(false);
+
   // Find same-product listings from other suppliers
   const comparisons = products.filter(
     (p) =>
@@ -46,6 +50,63 @@ export default function ProductDetailScreen() {
       p.id !== product.id &&
       p.availability !== "hidden",
   );
+
+  const handleGetDirections = async () => {
+    if (!product) return;
+    setNavigating(true);
+
+    try {
+      let originCoords = "";
+      try {
+        const { status } = await Location.requestForegroundPermissionsAsync();
+        if (status === "granted") {
+          const location = await Location.getCurrentPositionAsync({
+            accuracy: Location.Accuracy.Balanced,
+          });
+          originCoords = `${location.coords.latitude},${location.coords.longitude}`;
+        }
+      } catch {
+        // Fallback without origin - Maps app will use current device location
+      }
+
+      const destCoords = `${product.latitude},${product.longitude}`;
+      const destinationParam = encodeURIComponent(
+        `${destCoords} (${product.name} - ${product.location})`
+      );
+
+      if (Platform.OS === "ios") {
+        const appleMapsUrl = originCoords
+          ? `maps://?saddr=${originCoords}&daddr=${destCoords}&dirflg=d`
+          : `maps://?daddr=${destCoords}&dirflg=d`;
+
+        const canOpenApple = await Linking.canOpenURL(appleMapsUrl);
+        if (canOpenApple) {
+          await Linking.openURL(appleMapsUrl);
+          return;
+        }
+      }
+
+      // Google Maps URL with direction mode driving
+      const googleMapsUrl = originCoords
+        ? `https://www.google.com/maps/dir/?api=1&origin=${originCoords}&destination=${destCoords}&travelmode=driving`
+        : `https://www.google.com/maps/dir/?api=1&destination=${destinationParam}&travelmode=driving`;
+
+      const canOpenGoogle = await Linking.canOpenURL(googleMapsUrl);
+      if (canOpenGoogle) {
+        await Linking.openURL(googleMapsUrl);
+      } else {
+        Alert.alert(
+          "Open Maps",
+          `Farmer location coordinates:\nLatitude: ${product.latitude}\nLongitude: ${product.longitude}`,
+          [{ text: "OK" }]
+        );
+      }
+    } catch {
+      Alert.alert("Error", "Could not open map navigation.");
+    } finally {
+      setNavigating(false);
+    }
+  };
 
   return (
     <ScrollView className="flex-1 bg-muted" contentContainerClassName="pb-10">
@@ -132,20 +193,29 @@ export default function ProductDetailScreen() {
           </View>
         </View>
 
+        {/* Get Directions Button */}
+        <Pressable
+          onPress={handleGetDirections}
+          disabled={navigating}
+          className="mt-3 flex-row items-center justify-center gap-2 rounded-[12px] bg-primary/10 border border-primary/20 py-3.5 px-4 active:bg-primary/20"
+        >
+          <AppIcon name="navigate-outline" size={20} color="#16A34A" />
+          <Text className="text-[15px] font-bold text-primary">
+            {navigating ? "Opening Directions..." : "Get Directions to Farmer"}
+          </Text>
+        </Pressable>
+
         {/* Supplier Info */}
         {supplier && (
           <Pressable
             onPress={() => router.push(`/suppliers/${supplier.id}`)}
             className="mt-3 flex-row items-center gap-3 rounded-[14px] bg-card p-4 active:bg-muted"
           >
-            <View
-              className="size-12 items-center justify-center rounded-full"
-              style={{ backgroundColor: supplier.avatarColor }}
-            >
-              <Text className="text-lg font-bold text-primary-foreground">
-                {getInitials(supplier.name)}
-              </Text>
-            </View>
+            <AvatarInitials
+              name={supplier.name}
+              color={supplier.avatarColor}
+              size="md"
+            />
             <View className="flex-1">
               <Text className="text-[15px] font-bold text-foreground">
                 {supplier.name}

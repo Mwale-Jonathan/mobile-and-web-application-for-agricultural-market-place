@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { router } from "expo-router";
 import { AppIcon } from "@/components/app-icon";
+import { AppButton, FormField } from "@/components/ui";
 import { AppContext } from "@/context/app-context";
 import { Colors } from "@/constants";
 import { CATEGORIES } from "@/data/mock-data";
@@ -88,15 +89,13 @@ export default function CreateProductScreen() {
       </Pressable>
 
       {/* Product Name */}
-      <Text className="mb-2 text-[13px] font-semibold text-foreground">
-        Product Name *
-      </Text>
-      <TextInput
+      <FormField
+        label="Product Name"
         value={name}
         onChangeText={setName}
         placeholder="e.g. White Maize, Tomatoes"
-        placeholderTextColor={Colors.textTertiary}
-        className="mb-4 rounded-[10px] border border-border bg-card px-4 py-3 text-[15px] text-foreground"
+        required
+        containerClassName="mb-4"
       />
 
       {/* Category */}
@@ -207,26 +206,16 @@ export default function CreateProductScreen() {
       />
 
       {/* Location */}
-      <Text className="mb-2 text-[13px] font-semibold text-foreground">
-        Location
-      </Text>
-      <TextInput
+      <FormField
+        label="Location"
         value={location}
         onChangeText={setLocation}
         placeholder="e.g. Chongwe, Kafue"
-        placeholderTextColor={Colors.textTertiary}
-        className="mb-6 rounded-[10px] border border-border bg-card px-4 py-3 text-[15px] text-foreground"
+        containerClassName="mb-6"
       />
 
       {/* Submit */}
-      <Pressable
-        onPress={handleSubmit}
-        className="items-center rounded-[10px] bg-primary py-4 active:opacity-90"
-      >
-        <Text className="text-[17px] font-bold text-primary-foreground">
-          List Product
-        </Text>
-      </Pressable>
+      <AppButton label="List Product" onPress={handleSubmit} />
     </ScrollView>
   );
 }

@@ -1,7 +1,12 @@
 import { AppIcon, type AppIconName } from "@/components/app-icon";
+import {
+  AppButton,
+  AvatarInitials,
+  SectionHeader,
+  SettingsRow,
+} from "@/components/ui";
 import { Colors } from "@/constants";
 import { AppContext } from "@/context/app-context";
-import { getInitials } from "@/lib/helpers";
 import { cn } from "@/lib/utils";
 import { router } from "expo-router";
 import React from "react";
@@ -50,21 +55,27 @@ export default function SettingsScreen() {
   };
 
   const accountItems: SettingsItem[] = [
-    { icon: "person-outline", label: "Edit Profile", action: () => {} },
+    {
+      icon: "person-outline",
+      label: "Edit Profile",
+      action: () => router.push("/profile/edit"),
+    },
     {
       icon: "lock-closed-outline",
       label: "Change Password",
-      action: () => {},
+      action: () => router.push("/profile/change-password"),
     },
     {
       icon: "location-outline",
       label: "Manage Location",
-      action: () => {},
+      action: () => router.push("/profile/manage-location"),
     },
     {
       icon: "notifications-outline",
       label: "Notifications",
-      action: () => {},
+      action: () => {
+        Alert.alert("Notifications", "You have no new notifications.");
+      },
     },
   ];
 
@@ -94,15 +105,12 @@ export default function SettingsScreen() {
     >
       {/* Profile Card */}
       <View className="m-4 items-center rounded-[20px] bg-card p-6 shadow-md">
-        <View
-          className="mb-3 size-[72px] items-center justify-center rounded-full"
-          style={{
-            backgroundColor: currentUser?.avatarColor || Colors.primary,
-          }}
-        >
-          <Text className="text-2xl font-extrabold text-primary-foreground">
-            {getInitials(currentUser?.name || "U")}
-          </Text>
+        <View className="mb-3">
+          <AvatarInitials
+            name={currentUser?.name || "U"}
+            color={currentUser?.avatarColor || Colors.primary}
+            size="lg"
+          />
         </View>
         <Text className="text-xl font-bold text-foreground">
           {currentUser?.name}
@@ -142,9 +150,7 @@ export default function SettingsScreen() {
 
       {/* Role Switcher */}
       <View className="px-4">
-        <Text className="mb-2 ml-1 text-[13px] font-semibold uppercase tracking-[0.5px] text-muted-foreground">
-          Simulation
-        </Text>
+        <SectionHeader label="Simulation" />
         <Pressable
           onPress={handleRoleSwitch}
           className="mb-6 flex-row items-center gap-3 rounded-[10px] border border-accent bg-accent/15 p-4 active:opacity-90"
@@ -164,62 +170,39 @@ export default function SettingsScreen() {
 
       {/* Settings List */}
       <View className="px-4">
-        <Text className="mb-2 ml-1 text-[13px] font-semibold uppercase tracking-[0.5px] text-muted-foreground">
-          Account
-        </Text>
-        {/* Added will-change-variable here as a preventive measure */}
-        <View className="will-change-variable mb-6 overflow-hidden rounded-[14px] border border-border bg-card">
+        <SectionHeader label="Account" />
+        <View className="mb-6 overflow-hidden rounded-[14px] border border-border bg-card">
           {accountItems.map((item, i) => (
-            <Pressable
+            <SettingsRow
               key={item.label}
+              icon={item.icon}
+              label={item.label}
               onPress={item.action}
-              className={cn(
-                "flex-row items-center gap-3 px-4 py-4 active:bg-muted",
-                i < accountItems.length - 1 && "border-b border-border",
-              )}
-            >
-              <AppIcon name={item.icon} size={22} color="#16A34A" />
-              <Text className="flex-1 text-[15px] text-foreground">
-                {item.label}
-              </Text>
-              <AppIcon name="arrow-forward" size={16} color="#6B7280" />
-            </Pressable>
+              borderBottom={i < accountItems.length - 1}
+            />
           ))}
         </View>
 
         {/* Quick Links */}
-        <Text className="mb-2 ml-1 text-[13px] font-semibold uppercase tracking-[0.5px] text-muted-foreground">
-          Quick Links
-        </Text>
-        {/* FIX: Added 'will-change-variable' utility here */}
-        <View className="will-change-variable mb-6 overflow-hidden rounded-[14px] border border-border bg-card">
+        <SectionHeader label="Quick Links" />
+        <View className="mb-6 overflow-hidden rounded-[14px] border border-border bg-card">
           {quickLinks.map((item, i) => (
-            <Pressable
+            <SettingsRow
               key={item.label}
+              icon={item.icon}
+              label={item.label}
               onPress={item.action}
-              className={cn(
-                "flex-row items-center gap-3 px-4 py-4 active:bg-muted",
-                i < quickLinks.length - 1 && "border-b border-border",
-              )}
-            >
-              <AppIcon name={item.icon} size={22} color="#16A34A" />
-              <Text className="flex-1 text-[15px] text-foreground">
-                {item.label}
-              </Text>
-              <AppIcon name="arrow-forward" size={16} color="#6B7280" />
-            </Pressable>
+              borderBottom={i < quickLinks.length - 1}
+            />
           ))}
         </View>
 
         {/* Logout */}
-        <Pressable
+        <AppButton
+          label="Log Out"
           onPress={handleLogout}
-          className="items-center rounded-[10px] border border-destructive bg-transparent p-4 active:bg-destructive/10"
-        >
-          <Text className="text-[15px] font-bold text-destructive">
-            Log Out
-          </Text>
-        </Pressable>
+          variant="destructive"
+        />
 
         {/* App version */}
         <Text className="mt-6 text-center text-[11px] text-muted-foreground">
