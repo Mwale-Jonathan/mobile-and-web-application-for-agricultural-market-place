@@ -82,7 +82,10 @@ export default function TabLayout() {
                 options={{
                     title: "My Farm",
                     tabBarIcon: ({ focused }) => (
-                        <TabIcon name="storefront-outline" focused={focused} />
+                        <TabIcon
+                            name={focused ? "storefront" : "storefront-outline"}
+                            focused={focused}
+                        />
                     ),
                     href: isFarmer ? "/(tabs)/(farmer)" : null,
                 }}
@@ -92,7 +95,10 @@ export default function TabLayout() {
                 options={{
                     title: "Nearby",
                     tabBarIcon: ({ focused }) => (
-                        <TabIcon name="location-outline" focused={focused} />
+                        <TabIcon
+                            name={focused ? "location" : "location-outline"}
+                            focused={focused}
+                        />
                     ),
                 }}
             />

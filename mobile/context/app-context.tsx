@@ -3,7 +3,6 @@ import type {
   User,
   Product,
   SavedProduct,
-  UserRole,
   AvailabilityStatus,
 } from "@/types";
 import { DEMO_USERS, DEMO_PRODUCTS } from "@/data/mock-data";
@@ -13,10 +12,8 @@ interface AppContextType {
   isLoggedIn: boolean;
   currentUser: User | null;
   login: (email: string, password: string) => boolean;
-  loginAs: (userId: string) => void;
   logout: () => void;
   register: (user: Omit<User, "id" | "joinedDate" | "avatarColor">) => void;
-  switchRole: (role: UserRole) => void;
   updateUser: (updates: Partial<Omit<User, "id" | "joinedDate">>) => void;
   updatePassword: (currentPassword: string, newPassword: string) => boolean;
 
@@ -61,17 +58,6 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         return true;
       }
       return false;
-    },
-    [allUsers]
-  );
-
-  const loginAs = useCallback(
-    (userId: string) => {
-      const user = allUsers.find((u) => u.id === userId);
-      if (user) {
-        setCurrentUser(user);
-        setIsLoggedIn(true);
-      }
     },
     [allUsers]
   );
@@ -124,19 +110,6 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       return true; // mock – always succeeds in demo
     },
     []
-  );
-
-  const switchRole = useCallback(
-    (role: UserRole) => {
-      if (currentUser) {
-        const updated = { ...currentUser, role };
-        setCurrentUser(updated);
-        setAllUsers((prev) =>
-          prev.map((u) => (u.id === updated.id ? updated : u))
-        );
-      }
-    },
-    [currentUser]
   );
 
   const addProduct = useCallback(
@@ -225,10 +198,8 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         isLoggedIn,
         currentUser,
         login,
-        loginAs,
         logout,
         register,
-        switchRole,
         updateUser,
         updatePassword,
         products,

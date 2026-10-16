@@ -1,7 +1,5 @@
-import { AppIcon } from "@/components/app-icon";
 import { AppLogoIcon } from "@/components/logo-icon";
 import { AppButton, FormField } from "@/components/ui";
-import { Colors } from "@/constants";
 import { AppContext } from "@/context/app-context";
 import { Link, router } from "expo-router";
 import React, { useState } from "react";
@@ -10,12 +8,11 @@ import {
     Pressable,
     ScrollView,
     Text,
-    TextInput,
     View,
 } from "react-native";
 
 export default function LoginScreen() {
-    const { login, loginAs } = React.use(AppContext);
+    const { login } = React.use(AppContext);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
@@ -30,14 +27,9 @@ export default function LoginScreen() {
         } else {
             Alert.alert(
                 "Error",
-                "Account not found. Try a demo account below.",
+                "Account not found. Please check your email and password.",
             );
         }
-    };
-
-    const handleDemoLogin = (userId: string) => {
-        loginAs(userId);
-        router.replace("/(tabs)/(home)");
     };
 
     return (
@@ -99,72 +91,6 @@ export default function LoginScreen() {
                     </Link>
                 </View>
 
-                {/* Demo Accounts */}
-                <View className="mt-10 border-t border-border pt-6">
-                    <Text className="mb-4 text-center text-[13px] font-semibold text-muted-foreground">
-                        Quick Demo Access
-                    </Text>
-
-                    <View className="gap-2">
-                        <Pressable
-                            onPress={() => handleDemoLogin("farmer-1")}
-                            className="flex-row items-center gap-3 rounded-[10px] border border-border bg-card px-4 py-3 active:bg-primary/10"
-                        >
-                            <AppIcon
-                                name="storefront-outline"
-                                size={28}
-                                color="#16A34A"
-                            />
-                            <View className="flex-1">
-                                <Text className="text-[15px] font-semibold text-foreground">
-                                    Login as Farmer
-                                </Text>
-                                <Text className="text-[13px] text-muted-foreground">
-                                    Mwansa Chanda - Chongwe
-                                </Text>
-                            </View>
-                            <View className="flex-row items-center gap-1">
-                                <Text className="text-[11px] font-semibold text-primary">
-                                    LOGIN
-                                </Text>
-                                <AppIcon
-                                    name="arrow-forward"
-                                    size={12}
-                                    color="#16A34A"
-                                />
-                            </View>
-                        </Pressable>
-
-                        <Pressable
-                            onPress={() => handleDemoLogin("consumer-1")}
-                            className="flex-row items-center gap-3 rounded-[10px] border border-border bg-card px-4 py-3 active:bg-primary/10"
-                        >
-                            <AppIcon
-                                name="basket-outline"
-                                size={28}
-                                color="#16A34A"
-                            />
-                            <View className="flex-1">
-                                <Text className="text-[15px] font-semibold text-foreground">
-                                    Login as Buyer
-                                </Text>
-                                <Text className="text-[13px] text-muted-foreground">
-                                    Joseph Phiri - Lusaka CBD
-                                </Text>
-                            </View>
-                            <View className="flex-row items-center gap-1">
-                                <Text className="text-[11px] font-semibold text-primary">
-                                    LOGIN
-                                </Text>
-                                <AppIcon
-                                    name="arrow-forward"
-                                    size={12}
-                                    color="#16A34A"
-                                />
-                            </View>
-                        </Pressable>
-                    </View>
-                </View>
             </View>
         </ScrollView>
     );

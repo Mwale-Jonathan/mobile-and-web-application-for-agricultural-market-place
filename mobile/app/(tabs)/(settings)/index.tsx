@@ -10,7 +10,7 @@ import { AppContext } from "@/context/app-context";
 import { cn } from "@/lib/utils";
 import { router } from "expo-router";
 import React from "react";
-import { Alert, Pressable, ScrollView, Text, View } from "react-native";
+import { Alert, ScrollView, Text, View } from "react-native";
 
 type SettingsItem = {
   icon: AppIconName;
@@ -19,7 +19,7 @@ type SettingsItem = {
 };
 
 export default function SettingsScreen() {
-  const { currentUser, switchRole, logout } = React.use(AppContext);
+  const { currentUser, logout } = React.use(AppContext);
 
   const isFarmer = currentUser?.role === "farmer";
 
@@ -35,23 +35,6 @@ export default function SettingsScreen() {
         },
       },
     ]);
-  };
-
-  const handleRoleSwitch = () => {
-    const newRole = isFarmer ? "consumer" : "farmer";
-    switchRole(newRole);
-    Alert.alert(
-      "Role Switched",
-      `You are now using AgriMart as a ${
-        newRole === "farmer" ? "Farmer/Supplier" : "Buyer/Consumer"
-      }. Restart navigation to see updated tabs.`,
-      [
-        {
-          text: "OK",
-          onPress: () => router.replace("/(tabs)/(home)"),
-        },
-      ],
-    );
   };
 
   const accountItems: SettingsItem[] = [
@@ -146,26 +129,6 @@ export default function SettingsScreen() {
             </Text>
           </View>
         </View>
-      </View>
-
-      {/* Role Switcher */}
-      <View className="px-4">
-        <SectionHeader label="Simulation" />
-        <Pressable
-          onPress={handleRoleSwitch}
-          className="mb-6 flex-row items-center gap-3 rounded-[10px] border border-accent bg-accent/15 p-4 active:opacity-90"
-        >
-          <AppIcon name="sync-outline" size={30} color="#D97706" />
-          <View className="flex-1">
-            <Text className="text-[15px] font-bold text-foreground">
-              Switch to {isFarmer ? "Buyer" : "Farmer"} Mode
-            </Text>
-            <Text className="mt-0.5 text-[13px] text-muted-foreground">
-              Currently: {isFarmer ? "Farmer/Supplier" : "Buyer/Consumer"}
-            </Text>
-          </View>
-          <AppIcon name="arrow-forward" size={17} color="#D97706" />
-        </Pressable>
       </View>
 
       {/* Settings List */}
