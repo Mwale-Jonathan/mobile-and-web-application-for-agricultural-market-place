@@ -1,0 +1,38 @@
+{
+ "province_codes": {
+  "Central": 0,
+  "Copperbelt": 1,
+  "Eastern": 2,
+  "Luapula": 3,
+  "Lusaka": 4,
+  "Muchiga": 5,
+  "North-Western": 6,
+  "Northern": 7,
+  "Southern": 8,
+  "Western": 9
+ },
+ "commodity_codes": {
+  "Bananas": 0,
+  "Beans": 1,
+  "Cassava meal": 2,
+  "Eggs": 3,
+  "Fish (dry, bream)": 4,
+  "Fuel (diesel)": 5,
+  "Fuel (petrol-gasoline)": 6,
+  "Groundnuts (shelled)": 7,
+  "Maize (white)": 8,
+  "Maize (white, tin)": 9,
+  "Maize meal (white, breakfast)": 10,
+  "Maize meal (white, roller)": 11,
+  "Meat (mixed, cut)": 12,
+  "Milk (fresh)": 13,
+  "Millet": 14,
+  "Oil (cooking, imported)": 15,
+  "Oil (cooking, local)": 16,
+  "Rape leaves": 17,
+  "Rice": 18,
+  "Salt": 19,
+  "Sorghum": 20,
+  "Sugar": 21
+ }
+}
