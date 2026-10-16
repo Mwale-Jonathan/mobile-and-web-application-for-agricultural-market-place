@@ -1,7 +1,7 @@
 [project]
-name = "AgroMart Price Predictor"
+name = "zambia-prices"
 version = "0.1.0"
-description = "Add your description here"
+description = "Province-level Zambian agricultural commodity price forecasting service"
 readme = "README.md"
 authors = [
     { name = "Mwale Jonathan", email = "mwalejonathan10@gmail.com" }
