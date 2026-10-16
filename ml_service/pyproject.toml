@@ -1,17 +1,31 @@
 [project]
-name = "ml-service"
+name = "zambia-prices"
 version = "0.1.0"
-description = "Add your description here"
+description = "Province-level Zambian agricultural commodity price forecasting service"
 readme = "README.md"
 authors = [
     { name = "Mwale Jonathan", email = "mwalejonathan10@gmail.com" }
 ]
 requires-python = ">=3.12"
 dependencies = [
-    "jupyterlab>=4.6.3",
-    "notebook>=7.6.2",
+    "fastapi[standard]>=0.143.2",
+    "ipykernel>=7.4.0",
+    "joblib>=1.6.0",
+    "lightgbm>=4.7.0",
+    "matplotlib>=3.11.2",
+    "nbconvert>=7.17.2",
+    "nbformat>=5.11.1",
+    "numpy>=2.5.4",
     "pandas>=3.0.6",
+    "pydantic>=2.14.1",
+    "scikit-learn>=1.9.1",
+    "uvicorn>=0.54.0",
+    "xgboost>=3.4.1",
 ]
 
-[tool.uv]
-exclude-newer = "14 days"
+[project.scripts]
+zambia-prices = "zambia_prices:main"
+
+[build-system]
+requires = ["uv_build>=0.12.15,<0.13.0"]
+build-backend = "uv_build"

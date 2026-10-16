@@ -1,0 +1,194 @@
+series_id,province,commodity,unit,last_observation_date,last_observed_price,forecast_date,predicted_price,lower_bound,upper_bound
+Southern|Millet|KG,Southern,Millet,KG,2015-05,7.0,2015-06,6.767,3.848,11.899
+North-Western|Sorghum|KG,North-Western,Sorghum,KG,2015-05,4.0,2015-06,3.595,2.018,6.405
+Lusaka|Millet|KG,Lusaka,Millet,KG,2015-05,8.0,2015-06,7.722,4.617,12.915
+Central|Millet|KG,Central,Millet,KG,2015-05,4.0,2015-06,3.59,1.237,10.416
+Muchiga|Millet|KG,Muchiga,Millet,KG,2015-05,2.4,2015-06,2.315,1.33,4.029
+Central|Cassava meal|KG,Central,Cassava meal,KG,2015-05,9.15,2015-06,6.94,2.759,17.458
+Western|Cassava meal|KG,Western,Cassava meal,KG,2015-05,7.55,2015-06,7.478,4.418,12.655
+Muchiga|Cassava meal|KG,Muchiga,Cassava meal,KG,2015-05,9.01,2015-06,8.205,3.061,21.991
+Lusaka|Sorghum|KG,Lusaka,Sorghum,KG,2015-05,8.0,2015-06,7.643,4.561,12.807
+Luapula|Cassava meal|KG,Luapula,Cassava meal,KG,2015-05,2.78,2015-06,2.891,1.324,6.31
+Luapula|Millet|KG,Luapula,Millet,KG,2015-05,2.8,2015-06,2.833,1.689,4.752
+Copperbelt|Millet|KG,Copperbelt,Millet,KG,2015-05,4.0,2015-06,4.001,1.923,8.325
+Northern|Cassava meal|KG,Northern,Cassava meal,KG,2015-05,6.25,2015-06,5.608,2.499,12.585
+Northern|Millet|KG,Northern,Millet,KG,2015-05,2.0,2015-06,1.87,1.062,3.292
+Copperbelt|Cassava meal|KG,Copperbelt,Cassava meal,KG,2015-05,5.13,2015-06,5.208,3.104,8.738
+Copperbelt|Sorghum|KG,Copperbelt,Sorghum,KG,2015-05,4.0,2015-06,4.143,2.181,7.87
+North-Western|Cassava meal|KG,North-Western,Cassava meal,KG,2015-05,4.17,2015-06,4.242,1.184,15.199
+Southern|Sorghum|KG,Southern,Sorghum,KG,2015-05,3.04,2015-06,3.016,1.816,5.01
+Southern|Cassava meal|KG,Southern,Cassava meal,KG,2015-05,8.89,2015-06,7.517,2.378,23.764
+North-Western|Millet|KG,North-Western,Millet,KG,2015-05,4.0,2015-06,3.543,1.138,11.033
+Lusaka|Cassava meal|KG,Lusaka,Cassava meal,KG,2015-05,7.77,2015-06,7.568,4.175,13.719
+Lusaka|Groundnuts (shelled)|KG,Lusaka,Groundnuts (shelled),KG,2022-02,48.73,2022-03,45.683,29.499,70.746
+Copperbelt|Groundnuts (shelled)|KG,Copperbelt,Groundnuts (shelled),KG,2022-02,31.2,2022-03,31.376,26.682,36.895
+Central|Groundnuts (shelled)|KG,Central,Groundnuts (shelled),KG,2022-02,40.0,2022-03,37.94,27.161,52.997
+North-Western|Groundnuts (shelled)|KG,North-Western,Groundnuts (shelled),KG,2022-02,36.305,2022-03,37.284,24.172,57.51
+Southern|Groundnuts (shelled)|KG,Southern,Groundnuts (shelled),KG,2022-02,27.21,2022-03,31.473,16.438,60.26
+Luapula|Groundnuts (shelled)|KG,Luapula,Groundnuts (shelled),KG,2022-02,34.09,2022-03,34.129,30.574,38.097
+Western|Groundnuts (shelled)|KG,Western,Groundnuts (shelled),KG,2022-02,32.26,2022-03,33.484,24.825,45.164
+Northern|Groundnuts (shelled)|KG,Northern,Groundnuts (shelled),KG,2022-02,23.55,2022-03,26.166,22.051,31.048
+Eastern|Groundnuts (shelled)|KG,Eastern,Groundnuts (shelled),KG,2022-02,39.22,2022-03,40.693,31.717,52.208
+Muchiga|Groundnuts (shelled)|KG,Muchiga,Groundnuts (shelled),KG,2022-02,32.26,2022-03,32.671,27.999,38.122
+Western|Rice|KG,Western,Rice,KG,2022-08,17.3,2022-09,18.344,14.403,23.363
+Southern|Maize (white)|KG,Southern,Maize (white),KG,2022-08,5.0,2022-09,4.693,3.667,6.006
+Lusaka|Fuel (diesel)|L,Lusaka,Fuel (diesel),L,2022-08,24.88,2022-09,25.113,19.595,32.186
+Northern|Maize (white)|KG,Northern,Maize (white),KG,2022-08,3.95,2022-09,4.022,3.081,5.25
+Central|Rice|KG,Central,Rice,KG,2022-08,20.0,2022-09,21.136,15.058,29.668
+Lusaka|Fuel (petrol-gasoline)|L,Lusaka,Fuel (petrol-gasoline),L,2022-08,23.24,2022-09,23.532,18.029,30.716
+Muchiga|Rice|KG,Muchiga,Rice,KG,2022-08,22.5,2022-09,21.586,20.183,23.087
+Muchiga|Maize (white)|KG,Muchiga,Maize (white),KG,2022-08,4.0,2022-09,3.984,2.555,6.214
+Lusaka|Maize (white)|KG,Lusaka,Maize (white),KG,2022-08,4.03,2022-09,4.041,3.723,4.386
+Northern|Rice|KG,Northern,Rice,KG,2022-08,25.95,2022-09,25.023,18.035,34.718
+Eastern|Maize (white)|KG,Eastern,Maize (white),KG,2022-08,3.24,2022-09,3.296,2.813,3.862
+Luapula|Rice|KG,Luapula,Rice,KG,2022-08,24.205,2022-09,23.742,22.198,25.392
+Central|Maize (white)|KG,Central,Maize (white),KG,2022-08,3.69,2022-09,3.67,2.694,4.999
+Lusaka|Rice|KG,Lusaka,Rice,KG,2022-08,33.9,2022-09,32.462,26.777,39.353
+Western|Maize (white)|KG,Western,Maize (white),KG,2022-08,4.24,2022-09,4.193,3.35,5.249
+Luapula|Maize (white)|KG,Luapula,Maize (white),KG,2022-08,3.235,2022-09,3.344,2.341,4.777
+Copperbelt|Rice|KG,Copperbelt,Rice,KG,2022-08,24.25,2022-09,24.349,21.449,27.64
+North-Western|Rice|KG,North-Western,Rice,KG,2022-08,30.8,2022-09,29.876,27.83,32.072
+Eastern|Rice|KG,Eastern,Rice,KG,2022-08,23.66,2022-09,23.753,22.209,25.405
+North-Western|Maize (white)|KG,North-Western,Maize (white),KG,2022-08,2.68,2022-09,2.771,2.218,3.462
+Southern|Rice|KG,Southern,Rice,KG,2022-08,29.75,2022-09,29.042,18.853,44.738
+Copperbelt|Maize (white)|KG,Copperbelt,Maize (white),KG,2022-08,3.44,2022-09,3.558,2.93,4.319
+"Muchiga|Maize meal (white, roller)|KG",Muchiga,"Maize meal (white, roller)",KG,2025-03,11.2,2025-04,11.237,8.455,14.933
+Central|Rape leaves|KG,Central,Rape leaves,KG,2025-06,10.0,2025-07,11.03,7.206,16.882
+Central|Eggs|30 pcs,Central,Eggs,30 pcs,2025-06,91.0,2025-07,91.372,85.431,97.725
+Western|Salt|KG,Western,Salt,KG,2025-06,12.0,2025-07,12.615,9.193,17.311
+Central|Beans|KG,Central,Beans,KG,2025-06,49.0,2025-07,49.944,35.398,70.467
+"Western|Meat (mixed, cut)|KG",Western,"Meat (mixed, cut)",KG,2025-06,70.0,2025-07,71.233,65.846,77.061
+Central|Bananas|KG,Central,Bananas,KG,2025-06,20.0,2025-07,20.235,15.054,27.197
+"Western|Oil (cooking, imported)|L",Western,"Oil (cooking, imported)",L,2025-06,62.667,2025-07,62.731,56.079,70.172
+Central|Sugar|KG,Central,Sugar,KG,2025-06,37.0,2025-07,36.849,34.453,39.412
+"Central|Fish (dry, bream)|KG",Central,"Fish (dry, bream)",KG,2025-06,239.0,2025-07,247.27,163.369,374.261
+"Central|Meat (mixed, cut)|KG",Central,"Meat (mixed, cut)",KG,2025-06,94.5,2025-07,94.827,88.662,101.421
+Western|Rape leaves|KG,Western,Rape leaves,KG,2025-06,13.5,2025-07,13.079,9.003,18.999
+Western|Sugar|KG,Western,Sugar,KG,2025-06,35.0,2025-07,35.174,32.811,37.708
+Southern|Eggs|30 pcs,Southern,Eggs,30 pcs,2025-06,98.0,2025-07,98.34,91.946,105.178
+Western|Beans|KG,Western,Beans,KG,2025-06,55.0,2025-07,54.443,37.89,78.226
+"Eastern|Maize meal (white, breakfast)|KG",Eastern,"Maize meal (white, breakfast)",KG,2025-06,13.34,2025-07,12.967,12.124,13.869
+Western|Eggs|30 pcs,Western,Eggs,30 pcs,2025-06,94.0,2025-07,94.965,80.156,112.511
+"Western|Fish (dry, bream)|KG",Western,"Fish (dry, bream)",KG,2025-06,374.0,2025-07,346.436,214.708,558.984
+Southern|Beans|KG,Southern,Beans,KG,2025-06,71.0,2025-07,62.213,40.067,96.6
+"Luapula|Meat (mixed, cut)|KG",Luapula,"Meat (mixed, cut)",KG,2025-06,97.5,2025-07,97.954,86.221,111.284
+Eastern|Eggs|30 pcs,Eastern,Eggs,30 pcs,2025-06,97.0,2025-07,96.147,83.375,110.876
+Muchiga|Rape leaves|KG,Muchiga,Rape leaves,KG,2025-06,17.0,2025-07,15.924,8.111,31.261
+"Southern|Maize meal (white, roller)|KG",Southern,"Maize meal (white, roller)",KG,2025-06,9.28,2025-07,9.142,8.045,10.388
+"Southern|Meat (mixed, cut)|KG",Southern,"Meat (mixed, cut)",KG,2025-06,99.5,2025-07,99.123,90.664,108.372
+Luapula|Milk (fresh)|L,Luapula,Milk (fresh),L,2025-06,35.0,2025-07,35.5,24.905,50.601
+Muchiga|Eggs|30 pcs,Muchiga,Eggs,30 pcs,2025-06,100.5,2025-07,100.666,94.121,107.666
+Southern|Sugar|KG,Southern,Sugar,KG,2025-06,36.0,2025-07,36.166,33.61,38.916
+Western|Bananas|KG,Western,Bananas,KG,2025-06,29.0,2025-07,26.002,8.502,79.523
+Lusaka|Eggs|30 pcs,Lusaka,Eggs,30 pcs,2025-06,91.0,2025-07,91.693,76.755,109.537
+"Lusaka|Maize (white, tin)|Tin (20 L)",Lusaka,"Maize (white, tin)",Tin (20 L),2025-06,139.0,2025-07,141.664,106.651,188.171
+"Lusaka|Maize meal (white, breakfast)|KG",Lusaka,"Maize meal (white, breakfast)",KG,2025-06,12.04,2025-07,11.646,10.853,12.498
+"Lusaka|Maize meal (white, roller)|KG",Lusaka,"Maize meal (white, roller)",KG,2025-06,10.78,2025-07,10.418,9.444,11.492
+Lusaka|Rape leaves|KG,Lusaka,Rape leaves,KG,2025-06,16.0,2025-07,15.705,9.921,24.863
+Luapula|Rape leaves|KG,Luapula,Rape leaves,KG,2025-06,10.0,2025-07,10.35,8.319,12.878
+"Southern|Maize meal (white, breakfast)|KG",Southern,"Maize meal (white, breakfast)",KG,2025-06,12.14,2025-07,11.769,10.669,12.983
+Lusaka|Sugar|KG,Lusaka,Sugar,KG,2025-06,36.0,2025-07,36.001,33.661,38.505
+Muchiga|Bananas|KG,Muchiga,Bananas,KG,2025-06,14.0,2025-07,14.548,9.475,22.336
+Muchiga|Beans|KG,Muchiga,Beans,KG,2025-06,53.0,2025-07,48.664,31.832,74.397
+"North-Western|Meat (mixed, cut)|KG",North-Western,"Meat (mixed, cut)",KG,2025-06,102.0,2025-07,100.396,85.818,117.451
+"North-Western|Oil (cooking, local)|L",North-Western,"Oil (cooking, local)",L,2025-06,62.4,2025-07,62.243,58.196,66.571
+"Copperbelt|Meat (mixed, cut)|KG",Copperbelt,"Meat (mixed, cut)",KG,2025-06,97.0,2025-07,96.856,82.807,113.288
+"Copperbelt|Maize meal (white, roller)|KG",Copperbelt,"Maize meal (white, roller)",KG,2025-06,10.16,2025-07,9.846,9.206,10.53
+North-Western|Rape leaves|KG,North-Western,Rape leaves,KG,2025-06,20.0,2025-07,17.912,9.076,35.352
+North-Western|Salt|KG,North-Western,Salt,KG,2025-06,17.0,2025-07,16.92,11.711,24.448
+Luapula|Bananas|KG,Luapula,Bananas,KG,2025-06,8.5,2025-07,8.684,7.367,10.236
+Northern|Bananas|KG,Northern,Bananas,KG,2025-06,17.0,2025-07,17.847,10.613,30.013
+"Copperbelt|Fish (dry, bream)|KG",Copperbelt,"Fish (dry, bream)",KG,2025-06,294.0,2025-07,300.621,273.962,329.875
+Copperbelt|Eggs|30 pcs,Copperbelt,Eggs,30 pcs,2025-06,94.0,2025-07,94.551,88.404,101.126
+Northern|Beans|KG,Northern,Beans,KG,2025-06,33.0,2025-07,35.958,20.603,62.759
+Luapula|Beans|KG,Luapula,Beans,KG,2025-06,38.5,2025-07,38.435,31.606,46.74
+Copperbelt|Beans|KG,Copperbelt,Beans,KG,2025-06,56.0,2025-07,54.533,37.549,79.199
+Northern|Eggs|30 pcs,Northern,Eggs,30 pcs,2025-06,100.0,2025-07,100.714,93.262,108.761
+Luapula|Eggs|30 pcs,Luapula,Eggs,30 pcs,2025-06,100.0,2025-07,100.169,93.657,107.135
+"North-Western|Maize meal (white, roller)|KG",North-Western,"Maize meal (white, roller)",KG,2025-06,12.7,2025-07,12.275,11.056,13.628
+Lusaka|Beans|KG,Lusaka,Beans,KG,2025-06,69.5,2025-07,62.478,34.698,112.497
+Muchiga|Sugar|KG,Muchiga,Sugar,KG,2025-06,35.0,2025-07,35.148,32.83,37.63
+North-Western|Bananas|KG,North-Western,Bananas,KG,2025-06,20.0,2025-07,19.996,15.394,25.973
+North-Western|Eggs|30 pcs,North-Western,Eggs,30 pcs,2025-06,90.0,2025-07,90.972,82.902,99.829
+"Northern|Oil (cooking, local)|L",Northern,"Oil (cooking, local)",L,2025-06,63.6,2025-07,63.534,59.404,67.952
+"North-Western|Fish (dry, bream)|KG",North-Western,"Fish (dry, bream)",KG,2025-06,391.0,2025-07,393.225,200.354,771.765
+Copperbelt|Rape leaves|KG,Copperbelt,Rape leaves,KG,2025-06,12.0,2025-07,12.28,8.402,17.947
+"Northern|Maize meal (white, roller)|KG",Northern,"Maize meal (white, roller)",KG,2025-07,8.8,2025-08,8.681,5.666,13.3
+Muchiga|Milk (fresh)|L,Muchiga,Milk (fresh),L,2025-07,40.0,2025-08,39.631,28.293,55.512
+Eastern|Rape leaves|KG,Eastern,Rape leaves,KG,2025-07,9.0,2025-08,9.356,5.603,15.622
+"Eastern|Maize meal (white, roller)|KG",Eastern,"Maize meal (white, roller)",KG,2025-07,8.0,2025-08,8.014,7.451,8.619
+"Central|Maize meal (white, breakfast)|KG",Central,"Maize meal (white, breakfast)",KG,2025-09,10.0,2025-10,10.124,8.502,12.056
+"Central|Oil (cooking, local)|L",Central,"Oil (cooking, local)",L,2025-09,61.2,2025-10,61.369,56.118,67.112
+"Copperbelt|Maize meal (white, breakfast)|KG",Copperbelt,"Maize meal (white, breakfast)",KG,2025-09,9.36,2025-10,9.52,7.747,11.699
+"Northern|Maize (white, tin)|Tin (20 L)",Northern,"Maize (white, tin)",Tin (20 L),2025-09,120.0,2025-10,122.015,86.931,171.258
+"Southern|Fish (dry, bream)|KG",Southern,"Fish (dry, bream)",KG,2025-09,246.0,2025-10,258.713,194.784,343.623
+"Copperbelt|Maize (white, tin)|Tin (20 L)",Copperbelt,"Maize (white, tin)",Tin (20 L),2025-09,115.0,2025-10,118.635,86.359,162.973
+"Western|Maize (white, tin)|Tin (20 L)",Western,"Maize (white, tin)",Tin (20 L),2025-09,135.0,2025-10,135.841,94.669,194.92
+"Muchiga|Maize (white, tin)|Tin (20 L)",Muchiga,"Maize (white, tin)",Tin (20 L),2025-09,110.0,2025-10,114.022,95.326,136.385
+"Eastern|Maize (white, tin)|Tin (20 L)",Eastern,"Maize (white, tin)",Tin (20 L),2025-09,160.0,2025-10,150.52,88.83,255.052
+"Muchiga|Fish (dry, bream)|KG",Muchiga,"Fish (dry, bream)",KG,2025-09,385.0,2025-10,377.77,244.394,583.935
+"Northern|Oil (cooking, imported)|L",Northern,"Oil (cooking, imported)",L,2025-09,66.667,2025-10,67.005,62.023,72.387
+North-Western|Milk (fresh)|L,North-Western,Milk (fresh),L,2025-09,40.0,2025-10,39.186,28.165,54.519
+"Western|Maize meal (white, breakfast)|KG",Western,"Maize meal (white, breakfast)",KG,2025-09,11.88,2025-10,11.825,9.919,14.098
+"North-Western|Maize (white, tin)|Tin (20 L)",North-Western,"Maize (white, tin)",Tin (20 L),2025-09,90.0,2025-10,96.848,66.416,141.225
+Northern|Milk (fresh)|L,Northern,Milk (fresh),L,2025-09,37.0,2025-10,37.285,26.633,52.197
+"Copperbelt|Oil (cooking, local)|L",Copperbelt,"Oil (cooking, local)",L,2025-09,58.0,2025-10,58.387,54.591,62.447
+"Copperbelt|Oil (cooking, imported)|L",Copperbelt,"Oil (cooking, imported)",L,2025-09,64.0,2025-10,64.613,60.363,69.162
+"North-Western|Maize meal (white, breakfast)|KG",North-Western,"Maize meal (white, breakfast)",KG,2025-09,10.0,2025-10,10.196,7.15,14.538
+"Central|Maize (white, tin)|Tin (20 L)",Central,"Maize (white, tin)",Tin (20 L),2025-09,130.0,2025-10,131.359,85.414,202.019
+Southern|Bananas|KG,Southern,Bananas,KG,2025-09,42.0,2025-10,37.2,28.107,49.234
+"Muchiga|Oil (cooking, local)|L",Muchiga,"Oil (cooking, local)",L,2025-09,62.2,2025-10,62.126,58.087,66.446
+"Muchiga|Oil (cooking, imported)|L",Muchiga,"Oil (cooking, imported)",L,2025-09,65.333,2025-10,65.576,61.313,70.136
+Copperbelt|Milk (fresh)|L,Copperbelt,Milk (fresh),L,2025-09,36.0,2025-10,36.261,30.225,43.503
+"North-Western|Oil (cooking, imported)|L",North-Western,"Oil (cooking, imported)",L,2025-09,66.0,2025-10,66.353,62.039,70.967
+"Northern|Maize meal (white, breakfast)|KG",Northern,"Maize meal (white, breakfast)",KG,2025-09,12.36,2025-10,12.353,11.311,13.491
+"Muchiga|Maize meal (white, breakfast)|KG",Muchiga,"Maize meal (white, breakfast)",KG,2025-09,10.9,2025-10,10.997,10.02,12.069
+"Eastern|Oil (cooking, local)|L",Eastern,"Oil (cooking, local)",L,2025-09,64.2,2025-10,64.065,56.421,72.745
+"Luapula|Oil (cooking, local)|L",Luapula,"Oil (cooking, local)",L,2025-09,63.8,2025-10,63.553,59.421,67.972
+"Southern|Oil (cooking, imported)|L",Southern,"Oil (cooking, imported)",L,2025-09,66.667,2025-10,66.887,62.538,71.538
+"Eastern|Oil (cooking, imported)|L",Eastern,"Oil (cooking, imported)",L,2025-09,66.667,2025-10,66.996,62.64,71.654
+"Luapula|Maize (white, tin)|Tin (20 L)",Luapula,"Maize (white, tin)",Tin (20 L),2025-09,110.0,2025-10,114.821,80.47,163.837
+"Luapula|Maize meal (white, breakfast)|KG",Luapula,"Maize meal (white, breakfast)",KG,2025-09,10.4,2025-10,10.586,8.931,12.547
+Southern|Milk (fresh)|L,Southern,Milk (fresh),L,2025-09,29.0,2025-10,30.526,27.151,34.319
+"Western|Maize meal (white, roller)|KG",Western,"Maize meal (white, roller)",KG,2025-09,8.66,2025-10,8.689,7.54,10.015
+"Luapula|Oil (cooking, imported)|L",Luapula,"Oil (cooking, imported)",L,2025-09,63.333,2025-10,64.633,59.491,70.218
+Central|Milk (fresh)|L,Central,Milk (fresh),L,2025-09,32.0,2025-10,32.877,30.74,35.163
+"Central|Oil (cooking, imported)|L",Central,"Oil (cooking, imported)",L,2025-09,61.333,2025-10,62.769,58.572,67.267
+Western|Milk (fresh)|L,Western,Milk (fresh),L,2025-09,40.0,2025-10,38.551,26.14,56.856
+"Southern|Maize (white, tin)|Tin (20 L)",Southern,"Maize (white, tin)",Tin (20 L),2025-09,100.0,2025-10,107.884,86.639,134.337
+"Southern|Oil (cooking, local)|L",Southern,"Oil (cooking, local)",L,2025-09,62.2,2025-10,61.992,57.962,66.303
+"Luapula|Maize meal (white, roller)|KG",Luapula,"Maize meal (white, roller)",KG,2025-09,9.22,2025-10,9.313,8.333,10.408
+Eastern|Milk (fresh)|L,Eastern,Milk (fresh),L,2025-09,36.0,2025-10,36.203,30.064,43.596
+"Western|Oil (cooking, local)|L",Western,"Oil (cooking, local)",L,2025-09,38.0,2025-10,42.473,35.015,51.518
+Lusaka|Milk (fresh)|L,Lusaka,Milk (fresh),L,2025-09,28.0,2025-10,30.6,23.411,39.996
+"Central|Maize meal (white, roller)|KG",Central,"Maize meal (white, roller)",KG,2025-09,8.6,2025-10,8.541,7.937,9.191
+"Lusaka|Oil (cooking, imported)|L",Lusaka,"Oil (cooking, imported)",L,2025-09,60.0,2025-10,63.48,52.841,76.262
+"Lusaka|Oil (cooking, local)|L",Lusaka,"Oil (cooking, local)",L,2025-09,58.8,2025-10,59.048,55.209,63.154
+Copperbelt|Bananas|KG,Copperbelt,Bananas,KG,2025-10,10.0,2025-11,11.663,9.354,14.541
+Luapula|Sugar|KG,Luapula,Sugar,KG,2025-12,40.0,2026-01,39.736,37.153,42.499
+"Eastern|Fish (dry, bream)|KG",Eastern,"Fish (dry, bream)",KG,2025-12,548.0,2026-01,553.005,332.543,919.625
+Eastern|Sugar|KG,Eastern,Sugar,KG,2025-12,36.0,2026-01,36.173,33.787,38.728
+Eastern|Beans|KG,Eastern,Beans,KG,2025-12,74.0,2026-01,73.573,51.024,106.086
+"Muchiga|Meat (mixed, cut)|KG",Muchiga,"Meat (mixed, cut)",KG,2025-12,98.0,2026-01,102.73,86.652,121.791
+"Lusaka|Meat (mixed, cut)|KG",Lusaka,"Meat (mixed, cut)",KG,2025-12,99.0,2026-01,103.984,97.224,111.215
+Southern|Rape leaves|KG,Southern,Rape leaves,KG,2025-12,6.0,2026-01,6.311,3.108,12.817
+Northern|Rape leaves|KG,Northern,Rape leaves,KG,2025-12,16.0,2026-01,16.156,9.494,27.494
+Eastern|Bananas|KG,Eastern,Bananas,KG,2025-12,22.0,2026-01,21.512,9.449,48.977
+Copperbelt|Sugar|KG,Copperbelt,Sugar,KG,2025-12,35.0,2026-01,35.34,33.042,37.797
+North-Western|Beans|KG,North-Western,Beans,KG,2025-12,60.0,2026-01,61.976,44.494,86.328
+Muchiga|Salt|KG,Muchiga,Salt,KG,2026-01,12.5,2026-02,12.362,11.558,13.221
+Copperbelt|Salt|KG,Copperbelt,Salt,KG,2026-01,14.0,2026-02,13.827,12.928,14.788
+Luapula|Salt|KG,Luapula,Salt,KG,2026-01,11.5,2026-02,11.788,10.928,12.716
+Lusaka|Salt|KG,Lusaka,Salt,KG,2026-01,10.0,2026-02,10.352,9.044,11.849
+Central|Salt|KG,Central,Salt,KG,2026-01,10.5,2026-02,10.973,9.631,12.502
+"Lusaka|Fish (dry, bream)|KG",Lusaka,"Fish (dry, bream)",KG,2026-02,361.0,2026-03,379.409,215.923,666.677
+North-Western|Sugar|KG,North-Western,Sugar,KG,2026-06,38.0,2026-07,38.158,34.645,42.027
+Northern|Salt|KG,Northern,Salt,KG,2026-06,13.0,2026-07,13.294,10.525,16.791
+Southern|Salt|KG,Southern,Salt,KG,2026-06,12.0,2026-07,11.91,7.456,19.025
+Northern|Sugar|KG,Northern,Sugar,KG,2026-06,42.5,2026-07,42.113,30.584,57.987
+"Luapula|Fish (dry, bream)|KG",Luapula,"Fish (dry, bream)",KG,2026-06,167.0,2026-07,169.401,150.727,190.388
+Lusaka|Bananas|KG,Lusaka,Bananas,KG,2026-06,14.0,2026-07,13.839,10.632,18.012
+Eastern|Salt|KG,Eastern,Salt,KG,2026-06,12.0,2026-07,12.096,10.693,13.684
+"Eastern|Meat (mixed, cut)|KG",Eastern,"Meat (mixed, cut)",KG,2026-06,85.0,2026-07,86.838,65.164,115.721
+"Northern|Meat (mixed, cut)|KG",Northern,"Meat (mixed, cut)",KG,2026-06,140.0,2026-07,136.828,120.101,155.885
+"Northern|Fish (dry, bream)|KG",Northern,"Fish (dry, bream)",KG,2026-06,334.0,2026-07,307.57,196.499,481.422
