@@ -88,7 +88,7 @@ provinces. `unit` is also optional and is only needed when a commodity has more
 than one supported unit. The forecast month is the month immediately following
 the series' last real observation, which may be historical for stale series.
 
-## Tests and deployment
+## Tests
 
 Run the API contract suite with:
 
@@ -96,10 +96,50 @@ Run the API contract suite with:
 uv run pytest -q
 ```
 
-The repository-root `render.yaml` defines the hosted `agrimart-ml-api` service,
-uses `ml_service` as its root, installs the locked environment, starts Uvicorn on
-Render's `$PORT`, and checks `/health`. Configure `ALLOWED_ORIGINS` in the hosting
-dashboard; use `*` only when the public read-only API should allow every browser.
+## Docker and Google Cloud Run
+
+The production image installs only the API runtime dependencies, runs as a
+non-root user, and starts Uvicorn on the `PORT` environment variable supplied by
+Cloud Run.
+
+Build and test the image locally from this directory:
+
+```bash
+docker build -t agrimart-ml-api .
+docker run --rm -d --name agrimart-ml-api -p 8080:8080 \
+  -e ALLOWED_ORIGINS=http://localhost:3000 \
+  agrimart-ml-api
+curl http://localhost:8080/health
+docker stop agrimart-ml-api
+```
+
+With the Google Cloud CLI authenticated and a project selected, enable the
+required services once:
+
+```bash
+gcloud services enable run.googleapis.com cloudbuild.googleapis.com
+```
+
+Then build and deploy the checked-in `Dockerfile` directly from `ml_service/`:
+
+```bash
+gcloud run deploy agrimart-ml-api \
+  --source . \
+  --region africa-south1 \
+  --allow-unauthenticated \
+  --port 8080 \
+  --cpu 1 \
+  --memory 1Gi \
+  --set-env-vars ALLOWED_ORIGINS=https://your-web-app.example
+```
+
+Replace the allowed origin with the deployed web application's exact origin.
+Use a comma-separated value when more than one browser origin is required. Omit
+`--allow-unauthenticated` if the API should require authenticated Cloud Run
+requests.
+
+The repository-root `render.yaml` remains available for Render deployments and
+also uses the locked production dependency set.
 
 ## Reproduce the notebooks and model artifacts
 

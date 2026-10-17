@@ -8,19 +8,12 @@ authors = [
 ]
 requires-python = ">=3.12"
 dependencies = [
-    "fastapi[standard]>=0.143.2",
-    "ipykernel>=7.4.0",
+    "fastapi>=0.143.2",
     "joblib>=1.6.0",
-    "lightgbm>=4.7.0",
-    "matplotlib>=3.11.2",
-    "nbconvert>=7.17.2",
-    "nbformat>=5.11.1",
     "numpy>=2.5.4",
     "pandas>=3.0.6",
-    "pydantic>=2.14.1",
-    "scikit-learn>=1.9.1",
     "uvicorn>=0.54.0",
-    "xgboost>=3.4.1",
+    "xgboost-cpu>=3.4.1",
 ]
 
 [project.scripts]
@@ -36,5 +29,11 @@ pythonpath = ["."]
 [dependency-groups]
 dev = [
     "httpx>=0.28.1",
+    "ipykernel>=7.4.0",
+    "lightgbm>=4.7.0",
+    "matplotlib>=3.11.2",
+    "nbconvert>=7.17.2",
+    "nbformat>=5.11.1",
     "pytest>=9.1.1",
+    "scikit-learn>=1.9.1",
 ]

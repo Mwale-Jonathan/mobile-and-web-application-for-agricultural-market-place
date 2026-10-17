@@ -2061,6 +2061,7 @@ dependencies = [
     { name = "joblib" },
     { name = "numpy" },
     { name = "pandas" },
+    { name = "uvicorn" },
     { name = "xgboost-cpu" },
 ]
 
@@ -2074,7 +2075,6 @@ dev = [
     { name = "nbformat" },
     { name = "pytest" },
     { name = "scikit-learn" },
-    { name = "uvicorn" },
 ]
 
 [package.metadata]
@@ -2083,6 +2083,7 @@ requires-dist = [
     { name = "joblib", specifier = ">=1.6.0" },
     { name = "numpy", specifier = ">=2.5.4" },
     { name = "pandas", specifier = ">=3.0.6" },
+    { name = "uvicorn", specifier = ">=0.54.0" },
     { name = "xgboost-cpu", specifier = ">=3.4.1" },
 ]
 
@@ -2096,5 +2097,4 @@ dev = [
     { name = "nbformat", specifier = ">=5.11.1" },
     { name = "pytest", specifier = ">=9.1.1" },
     { name = "scikit-learn", specifier = ">=1.9.1" },
-    { name = "uvicorn", specifier = ">=0.54.0" },
 ]
