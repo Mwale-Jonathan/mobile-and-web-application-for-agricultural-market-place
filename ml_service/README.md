@@ -44,6 +44,14 @@ uv run uvicorn api.main:app --host 0.0.0.0 --port 8000 --reload
 
 Open the interactive API documentation at <http://localhost:8000/docs>.
 
+For Expo web or another browser client, configure allowed origins as a
+comma-separated list. Native mobile requests are not subject to browser CORS:
+
+```bash
+ALLOWED_ORIGINS=http://localhost:8081,http://localhost:19006 \
+  uv run uvicorn api.main:app --host 0.0.0.0 --port 8000
+```
+
 The service loads these existing artifacts during startup:
 
 - `models/best_model.joblib` — deployed XGBoost model
@@ -79,6 +87,19 @@ curl 'http://localhost:8000/predict?commodity=fresh%20beans&province=Central'
 provinces. `unit` is also optional and is only needed when a commodity has more
 than one supported unit. The forecast month is the month immediately following
 the series' last real observation, which may be historical for stale series.
+
+## Tests and deployment
+
+Run the API contract suite with:
+
+```bash
+uv run pytest -q
+```
+
+The repository-root `render.yaml` defines the hosted `agrimart-ml-api` service,
+uses `ml_service` as its root, installs the locked environment, starts Uvicorn on
+Render's `$PORT`, and checks `/health`. Configure `ALLOWED_ORIGINS` in the hosting
+dashboard; use `*` only when the public read-only API should allow every browser.
 
 ## Reproduce the notebooks and model artifacts
 

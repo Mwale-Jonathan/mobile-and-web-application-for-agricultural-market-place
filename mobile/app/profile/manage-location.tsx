@@ -9,15 +9,19 @@ export default function ManageLocationScreen() {
   const { currentUser, updateUser } = React.use(AppContext);
   const [modalVisible, setModalVisible] = useState(false);
 
-  const handleConfirmLocation = (result: LocationResult) => {
-    updateUser({
-      location: result.locationName,
-      province: result.province,
-      latitude: result.latitude,
-      longitude: result.longitude,
-    });
-    setModalVisible(false);
-    Alert.alert('Location Updated', `Your location has been set to ${result.locationName}, ${result.province}.`);
+  const handleConfirmLocation = async (result: LocationResult) => {
+    try {
+      await updateUser({
+        location: result.locationName,
+        province: result.province,
+        latitude: result.latitude,
+        longitude: result.longitude,
+      });
+      setModalVisible(false);
+      Alert.alert('Location Updated', `Your location has been set to ${result.locationName}, ${result.province}.`);
+    } catch (error) {
+      Alert.alert('Unable to update location', error instanceof Error ? error.message : 'Please try again.');
+    }
   };
 
   return (
@@ -58,8 +62,8 @@ export default function ManageLocationScreen() {
         visible={modalVisible}
         onClose={() => setModalVisible(false)}
         onConfirm={handleConfirmLocation}
-        initialLatitude={currentUser?.latitude}
-        initialLongitude={currentUser?.longitude}
+        initialLatitude={currentUser?.latitude ?? undefined}
+        initialLongitude={currentUser?.longitude ?? undefined}
       />
     </View>
   );

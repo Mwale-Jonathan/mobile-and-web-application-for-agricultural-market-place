@@ -33,6 +33,15 @@
         "plugins": [
             "expo-router",
             [
+                "expo-image-picker",
+                {
+                    "photosPermission": "Allow AgriMart to select product photos from your library.",
+                    "cameraPermission": false,
+                    "microphonePermission": false
+                }
+            ],
+            "expo-secure-store",
+            [
                 "expo-location",
                 {
                     "locationWhenInUsePermission": "Allow AgriMart to use your location to show nearby farms."

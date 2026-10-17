@@ -18,7 +18,13 @@ export default function FarmerListingsScreen() {
       {
         text: "Delete",
         style: "destructive",
-        onPress: () => deleteProduct(id),
+        onPress: async () => {
+          try {
+            await deleteProduct(id);
+          } catch (error) {
+            Alert.alert("Unable to delete product", error instanceof Error ? error.message : "Please try again.");
+          }
+        },
       },
     ]);
   };
@@ -26,7 +32,16 @@ export default function FarmerListingsScreen() {
   const handleSoldOut = (id: string, name: string) => {
     Alert.alert("Mark Sold Out", `Mark "${name}" as sold out?`, [
       { text: "Cancel", style: "cancel" },
-      { text: "Confirm", onPress: () => markSoldOut(id) },
+      {
+        text: "Confirm",
+        onPress: async () => {
+          try {
+            await markSoldOut(id);
+          } catch (error) {
+            Alert.alert("Unable to update product", error instanceof Error ? error.message : "Please try again.");
+          }
+        },
+      },
     ]);
   };
 

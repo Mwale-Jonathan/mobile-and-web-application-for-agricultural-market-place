@@ -13,7 +13,7 @@ type QuickLink = {
 };
 
 export default function HomeScreen() {
-    const { currentUser, products, allUsers } = React.use(AppContext);
+    const { currentUser, products, allUsers, error, refreshMarketplace } = React.use(AppContext);
     const isFarmer = currentUser?.role === "farmer";
 
     const featuredProducts = products
@@ -124,6 +124,13 @@ export default function HomeScreen() {
             </View>
 
             {/* Categories */}
+            {error && (
+                <Pressable onPress={() => refreshMarketplace().catch(() => undefined)} className="mx-4 mt-4 rounded-[12px] border border-destructive/20 bg-destructive/10 p-3">
+                    <Text className="font-semibold text-destructive">Marketplace data could not be refreshed</Text>
+                    <Text className="mt-1 text-[12px] text-destructive">{error} Tap to retry.</Text>
+                </Pressable>
+            )}
+
             <View className="mt-6">
                 <Text className="mx-4 mb-3 text-xl font-bold text-foreground">
                     Categories

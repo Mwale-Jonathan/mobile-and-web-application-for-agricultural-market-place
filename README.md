@@ -16,21 +16,21 @@ My contribution to the project is the design and development of two main compone
    Zambia food-price model and its uncertainty intervals.
 
 These components currently live in the `mobile/` and `ml_service/` directories. The
-mobile application is a simulated MVP that uses local mock data. The ML service runs
-with checked-in processed data and trained model artifacts. Connecting the two over
-the prediction API is a future integration step.
+mobile application uses the AgriMart Express API for marketplace features and calls
+the ML service directly for forecasts. The ML service runs with checked-in processed
+data and trained model artifacts.
 
 ## Main features
 
 ### Mobile application
 
-- Buyer and farmer demo accounts and role-aware navigation
+- Real buyer and farmer accounts with persistent role-aware navigation
 - Product browsing, searching, filtering, and price comparison
 - Product details and supplier profiles
 - Phone and WhatsApp supplier contact actions
 - Nearby supplier map using device location and OpenStreetMap
 - Farmer listing creation, editing, sold-out marking, and deletion
-- Saved products and a placeholder screen for future ML integration
+- Saved products and live province-level ML price forecasts
 
 ### Machine-learning service
 
@@ -106,8 +106,8 @@ mobile-and-web-application-for-agricultural-market-place/
 
 ## Current boundaries
 
-- The mobile MVP does not yet call the ML API.
-- Mobile marketplace data and authentication are currently simulated in memory.
+- Express and FastAPI are separate services configured with public mobile environment URLs.
+- Forecasting is price-focused; product availability forecasting is not implemented.
 - The raw WFP training CSV is not committed; the ML API uses the committed processed
   panel and model artifacts.
 - Forecasts are estimates derived from historical data and should not be presented as

@@ -9,8 +9,9 @@ export default function ChangePasswordScreen() {
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!currentPassword) {
       Alert.alert('Error', 'Please enter your current password');
       return;
@@ -24,13 +25,18 @@ export default function ChangePasswordScreen() {
       return;
     }
 
-    const success = updatePassword(currentPassword, newPassword);
-    if (success) {
-      Alert.alert('Success', 'Your password has been changed successfully!', [
-        { text: 'OK', onPress: () => router.back() },
-      ]);
-    } else {
-      Alert.alert('Error', 'Failed to update password. Please check your current password.');
+    setLoading(true);
+    try {
+      const success = await updatePassword(currentPassword, newPassword, confirmPassword);
+      if (success) {
+        Alert.alert('Success', 'Your password has been changed successfully!', [
+          { text: 'OK', onPress: () => router.back() },
+        ]);
+      }
+    } catch (error) {
+      Alert.alert('Error', error instanceof Error ? error.message : 'Failed to update password.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -67,7 +73,7 @@ export default function ChangePasswordScreen() {
         />
       </View>
 
-      <AppButton label="Update Password" onPress={handleSave} className="mt-2" />
+      <AppButton label="Update Password" onPress={handleSave} loading={loading} className="mt-2" />
     </ScrollView>
   );
 }

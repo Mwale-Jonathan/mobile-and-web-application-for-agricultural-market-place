@@ -1,5 +1,5 @@
 import React, { useContext, useMemo, useState } from "react";
-import { FlatList, Pressable, Text, TextInput, View } from "react-native";
+import { ActivityIndicator, FlatList, Pressable, Text, TextInput, View } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 
 import { AppIcon } from "@/components/app-icon";
@@ -10,12 +10,11 @@ import { Colors } from "@/constants";
 import { AppContext } from "@/context/app-context";
 import { CATEGORIES } from "@/data/mock-data";
 import { cn } from "@/lib/utils";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 type SortOption = "newest" | "price_low" | "price_high" | "name";
 
 export default function ProductListScreen() {
-    const { products, allUsers } = useContext(AppContext);
+    const { products, allUsers, isLoading, error, refreshMarketplace } = useContext(AppContext);
     const params = useLocalSearchParams<{ category?: string }>();
 
     const [search, setSearch] = useState("");
@@ -177,6 +176,8 @@ export default function ProductListScreen() {
                 columnWrapperClassName="gap-4 px-4"
                 contentContainerClassName="gap-3 pb-8"
                 contentInsetAdjustmentBehavior="automatic"
+                refreshing={isLoading}
+                onRefresh={() => refreshMarketplace().catch(() => undefined)}
                 renderItem={({ item }) => (
                     <View className="flex-1 max-w-[48%]">
                         <ProductCard
@@ -185,7 +186,17 @@ export default function ProductListScreen() {
                         />
                     </View>
                 )}
-                ListEmptyComponent={
+                ListEmptyComponent={isLoading ? (
+                    <View className="items-center py-16"><ActivityIndicator color="#16A34A" /></View>
+                ) : error ? (
+                    <EmptyState
+                        icon="cloud-offline-outline"
+                        title="Unable to Load Products"
+                        message={error}
+                        actionLabel="Retry"
+                        onAction={() => refreshMarketplace().catch(() => undefined)}
+                    />
+                ) : (
                     <EmptyState
                         icon="search-outline"
                         title="No Products Found"
@@ -200,7 +211,7 @@ export default function ProductListScreen() {
                             setSelectedCategory(null);
                         }}
                     />
-                }
+                )}
             />
         </View>
     );

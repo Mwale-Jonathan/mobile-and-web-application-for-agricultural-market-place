@@ -9,6 +9,7 @@ from contextlib import asynccontextmanager
 from typing import List, Optional
 
 from fastapi import FastAPI, HTTPException, Query
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
@@ -31,6 +32,22 @@ async def lifespan(app: FastAPI):
 app = FastAPI(title="Zambia food price forecaster", version="1.0.0",
               description="One-month-ahead province-level retail price forecasts (WFP data).",
               lifespan=lifespan)
+
+
+def _allowed_origins() -> list[str]:
+    raw = os.getenv("ALLOWED_ORIGINS", "*")
+    if raw.strip() == "*":
+        return ["*"]
+    return [origin.strip() for origin in raw.split(",") if origin.strip()]
+
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=_allowed_origins(),
+    allow_credentials=False,
+    allow_methods=["GET", "POST", "OPTIONS"],
+    allow_headers=["Content-Type", "Accept"],
+)
 
 
 class PredictRequest(BaseModel):
@@ -62,7 +79,7 @@ class PredictResponse(BaseModel):
 
 
 @app.get("/health")
-def health():
+async def health():
     ok = "fc" in STATE
     m = STATE.get("meta", {})
     return {"status": "ok" if ok else "loading", "model": m.get("model"), "variant": m.get("variant"),
@@ -71,7 +88,7 @@ def health():
 
 
 @app.get("/commodities")
-def commodities():
+async def commodities():
     fc: Forecaster = STATE["fc"]
     return {"count": len(fc.commodity_names), "provinces": fc.provinces, "commodities": fc.commodities()}
 
@@ -109,11 +126,11 @@ def _run(commodity: str, province: Optional[str], unit: Optional[str]) -> Predic
 
 
 @app.post("/predict", response_model=PredictResponse)
-def predict(req: PredictRequest):
+async def predict(req: PredictRequest):
     return _run(req.commodity, req.province, req.unit)
 
 
 @app.get("/predict", response_model=PredictResponse)
-def predict_get(commodity: str = Query(..., examples=["fresh beans"]), province: Optional[str] = None,
-                unit: Optional[str] = None):
+async def predict_get(commodity: str = Query(..., examples=["fresh beans"]), province: Optional[str] = None,
+                      unit: Optional[str] = None):
     return _run(commodity, province, unit)

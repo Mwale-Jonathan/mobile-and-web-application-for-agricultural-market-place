@@ -271,7 +271,11 @@ export default function MapScreen() {
     const pinsBySupplier = new Map<string, FarmPin>();
 
     products
-      .filter((product) => product.availability !== "hidden")
+      .filter((product) =>
+        product.availability !== "hidden" &&
+        product.latitude !== null &&
+        product.longitude !== null
+      )
       .forEach((product) => {
         const supplier = allUsers.find(
           (user) => user.id === product.supplierId && user.role === "farmer"
@@ -292,8 +296,8 @@ export default function MapScreen() {
           location: supplier.location,
           province: supplier.province,
           productCount: 1,
-          latitude: product.latitude,
-          longitude: product.longitude,
+          latitude: product.latitude as number,
+          longitude: product.longitude as number,
           color: supplier.avatarColor,
         });
       });

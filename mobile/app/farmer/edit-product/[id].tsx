@@ -5,6 +5,10 @@ import { cn } from "@/lib/utils";
 import type { AvailabilityStatus, ProductUnit } from "@/types";
 import { router, useLocalSearchParams } from "expo-router";
 import React, { useEffect, useState } from "react";
+import * as ImagePicker from "expo-image-picker";
+import { Image } from "expo-image";
+import type { UploadAsset } from "@/lib/api";
+import { toUploadAsset } from "@/lib/image-upload";
 import {
   Alert,
   Pressable,
@@ -44,6 +48,8 @@ export default function EditProductScreen() {
   const [description, setDescription] = useState("");
   const [availability, setAvailability] =
     useState<AvailabilityStatus>("available");
+  const [image, setImage] = useState<UploadAsset | null>(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (product) {
@@ -68,23 +74,45 @@ export default function EditProductScreen() {
       />
     );
 
-  const handleSave = () => {
+  const pickImage = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ["images"],
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 0.75,
+    });
+    if (result.canceled) return;
+    try {
+      setImage(toUploadAsset(result.assets[0]));
+    } catch (error) {
+      Alert.alert("Unsupported photo", error instanceof Error ? error.message : "Choose another image.");
+    }
+  };
+
+  const handleSave = async () => {
     if (!name.trim() || !price) {
       Alert.alert("Error", "Name and price are required.");
       return;
     }
-    updateProduct(product.id, {
-      name: name.trim(),
-      categoryId,
-      price: parseFloat(price),
-      unit,
-      quantity: parseInt(quantity, 10) || 0,
-      description: description.trim(),
-      availability,
-    });
-    Alert.alert("Updated", "Product updated successfully!", [
-      { text: "OK", onPress: () => router.back() },
-    ]);
+    setLoading(true);
+    try {
+      await updateProduct(product.id, {
+        name: name.trim(),
+        categoryId,
+        price: parseFloat(price),
+        unit,
+        quantity: parseInt(quantity, 10) || 0,
+        description: description.trim(),
+        availability,
+      }, image);
+      Alert.alert("Updated", "Product updated successfully!", [
+        { text: "OK", onPress: () => router.back() },
+      ]);
+    } catch (error) {
+      Alert.alert("Unable to update product", error instanceof Error ? error.message : "Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -93,6 +121,17 @@ export default function EditProductScreen() {
       contentContainerClassName="p-4 pb-10"
       keyboardShouldPersistTaps="handled"
     >
+      <Pressable onPress={pickImage} className="mb-5 h-40 overflow-hidden rounded-[14px] border border-border bg-card">
+        <Image
+          source={{ uri: image?.uri || product.imageUrl }}
+          style={{ width: "100%", height: "100%" }}
+          contentFit="cover"
+        />
+        <View className="absolute bottom-0 left-0 right-0 bg-black/60 py-2">
+          <Text className="text-center text-sm font-semibold text-white">Change photo</Text>
+        </View>
+      </Pressable>
+
       <Text className="mb-2 text-[13px] font-semibold text-foreground">
         Product Name
       </Text>
@@ -232,10 +271,11 @@ export default function EditProductScreen() {
 
       <Pressable
         onPress={handleSave}
+        disabled={loading}
         className="items-center rounded-[10px] bg-primary py-4 active:opacity-90"
       >
         <Text className="text-[17px] font-bold text-primary-foreground">
-          Save Changes
+          {loading ? "Saving…" : "Save Changes"}
         </Text>
       </Pressable>
     </ScrollView>

@@ -13,22 +13,30 @@ import {
 
 export default function LoginScreen() {
     const { login } = React.use(AppContext);
-    const [email, setEmail] = useState("");
+    const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [loading, setLoading] = useState(false);
 
-    const handleLogin = () => {
-        if (!email.trim()) {
-            Alert.alert("Error", "Please enter your email");
+    const handleLogin = async () => {
+        if (!username.trim()) {
+            Alert.alert("Error", "Please enter your username or email");
             return;
         }
-        const success = login(email.trim(), password);
-        if (success) {
+        if (!password) {
+            Alert.alert("Error", "Please enter your password");
+            return;
+        }
+        setLoading(true);
+        try {
+            await login(username.trim(), password);
             router.replace("/(tabs)/(home)");
-        } else {
+        } catch (error) {
             Alert.alert(
                 "Error",
-                "Account not found. Please check your email and password.",
+                error instanceof Error ? error.message : "Unable to log in.",
             );
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -55,11 +63,10 @@ export default function LoginScreen() {
                 {/* Form */}
                 <View className="gap-4">
                     <FormField
-                        label="Email"
-                        value={email}
-                        onChangeText={setEmail}
-                        placeholder="Enter your email"
-                        keyboardType="email-address"
+                        label="Username or email"
+                        value={username}
+                        onChangeText={setUsername}
+                        placeholder="Enter your username or email"
                         autoCapitalize="none"
                         required
                     />
@@ -76,6 +83,7 @@ export default function LoginScreen() {
                     <AppButton
                         label="Log In"
                         onPress={handleLogin}
+                        loading={loading}
                         className="mt-2"
                     />
 

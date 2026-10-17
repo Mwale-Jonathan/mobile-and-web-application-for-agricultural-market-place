@@ -8,9 +8,11 @@ import { AppContext } from "@/context/app-context";
 import { CATEGORIES } from "@/data/mock-data";
 import { formatDate, formatPrice } from "@/lib/helpers";
 import { cn } from "@/lib/utils";
+import { api } from "@/lib/api";
+import type { Product } from "@/types";
 import { Image } from "expo-image";
 import { router, useLocalSearchParams } from "expo-router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Alert, Linking, Platform, Pressable, ScrollView, Text, View } from "react-native";
 
 export default function ProductDetailScreen() {
@@ -18,13 +20,25 @@ export default function ProductDetailScreen() {
   const {
     getProductById,
     getUserById,
-    products,
     allUsers,
     toggleSaved,
     isSaved,
   } = React.use(AppContext);
 
+  const [navigating, setNavigating] = useState(false);
+  const [comparisons, setComparisons] = useState<Pick<Product, "id" | "name" | "price" | "unit" | "supplierId" | "location" | "imageUrl">[]>([]);
+
   const product = getProductById(id);
+  useEffect(() => {
+    let active = true;
+    if (product) {
+      api.compare(product.id)
+        .then((result) => { if (active) setComparisons(result.comparable); })
+        .catch(() => { if (active) setComparisons([]); });
+    }
+    return () => { active = false; };
+  }, [product]);
+
   if (!product) {
     return (
       <EmptyState
@@ -41,18 +55,12 @@ export default function ProductDetailScreen() {
   const category = CATEGORIES.find((c) => c.id === product.categoryId);
   const saved = isSaved(product.id);
 
-  const [navigating, setNavigating] = useState(false);
-
-  // Find same-product listings from other suppliers
-  const comparisons = products.filter(
-    (p) =>
-      p.name.toLowerCase() === product.name.toLowerCase() &&
-      p.id !== product.id &&
-      p.availability !== "hidden",
-  );
-
   const handleGetDirections = async () => {
     if (!product) return;
+    if (product.latitude === null || product.longitude === null) {
+      Alert.alert("Location unavailable", "This listing does not have a map pin yet.");
+      return;
+    }
     setNavigating(true);
 
     try {
@@ -134,7 +142,9 @@ export default function ProductDetailScreen() {
             )}
           </View>
           <Pressable
-            onPress={() => toggleSaved(product.id)}
+            onPress={() => toggleSaved(product.id).catch((error) =>
+              Alert.alert("Unable to update saved products", error instanceof Error ? error.message : "Please try again."),
+            )}
             className={cn(
               "size-11 items-center justify-center rounded-full",
               saved ? "bg-destructive/10" : "bg-muted",
@@ -203,6 +213,14 @@ export default function ProductDetailScreen() {
           <Text className="text-[15px] font-bold text-primary">
             {navigating ? "Opening Directions..." : "Get Directions to Farmer"}
           </Text>
+        </Pressable>
+
+        <Pressable
+          onPress={() => router.push({ pathname: "/predictions", params: { commodity: product.name, province: product.province, unit: product.unit, auto: "1" } })}
+          className="mt-3 flex-row items-center justify-center gap-2 rounded-[12px] bg-accent/15 border border-accent/30 py-3.5 px-4 active:opacity-80"
+        >
+          <AppIcon name="trending-up-outline" size={20} color="#D97706" />
+          <Text className="text-[15px] font-bold text-accent">Forecast this product</Text>
         </Pressable>
 
         {/* Supplier Info */}

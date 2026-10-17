@@ -1,224 +1,206 @@
-import React, { createContext, useState, useCallback } from "react";
-import type {
-  User,
-  Product,
-  SavedProduct,
-  AvailabilityStatus,
-} from "@/types";
-import { DEMO_USERS, DEMO_PRODUCTS } from "@/data/mock-data";
+import { api, configureApiAuth, type ProductInput, type RegisterInput, type UploadAsset } from "@/lib/api";
+import { readStoredToken, writeStoredToken } from "@/lib/token-storage";
+import type { Product, SavedProduct, User } from "@/types";
+import React, { createContext, useCallback, useEffect, useMemo, useState } from "react";
 
 interface AppContextType {
-  // Auth
+  isInitializing: boolean;
+  isLoading: boolean;
+  error: string | null;
   isLoggedIn: boolean;
   currentUser: User | null;
-  login: (email: string, password: string) => boolean;
-  logout: () => void;
-  register: (user: Omit<User, "id" | "joinedDate" | "avatarColor">) => void;
-  updateUser: (updates: Partial<Omit<User, "id" | "joinedDate">>) => void;
-  updatePassword: (currentPassword: string, newPassword: string) => boolean;
-
-  // Products
+  login: (usernameOrEmail: string, password: string) => Promise<User>;
+  logout: () => Promise<void>;
+  register: (input: RegisterInput) => Promise<User>;
+  updateUser: (updates: Partial<User>) => Promise<User>;
+  updatePassword: (currentPassword: string, newPassword: string, confirmPassword?: string) => Promise<boolean>;
   products: Product[];
-  addProduct: (product: Omit<Product, "id" | "createdAt">) => void;
-  updateProduct: (id: string, updates: Partial<Product>) => void;
-  deleteProduct: (id: string) => void;
-  markSoldOut: (id: string) => void;
+  addProduct: (product: ProductInput, image?: UploadAsset | null) => Promise<Product>;
+  updateProduct: (id: string, updates: Partial<ProductInput>, image?: UploadAsset | null) => Promise<Product>;
+  deleteProduct: (id: string) => Promise<void>;
+  markSoldOut: (id: string) => Promise<Product>;
   getProductById: (id: string) => Product | undefined;
   getProductsBySupplier: (supplierId: string) => Product[];
   getProductsByCategory: (categoryId: string) => Product[];
   getProductsByName: (name: string) => Product[];
-
-  // Users
   allUsers: User[];
   getUserById: (id: string) => User | undefined;
-
-  // Saved
   savedProducts: SavedProduct[];
-  toggleSaved: (productId: string) => void;
+  toggleSaved: (productId: string) => Promise<boolean>;
   isSaved: (productId: string) => boolean;
+  refreshMarketplace: () => Promise<void>;
 }
 
 export const AppContext = createContext<AppContextType>({} as AppContextType);
 
+function messageFrom(error: unknown) {
+  return error instanceof Error ? error.message : "Something went wrong. Please try again.";
+}
+
 export function AppProvider({ children }: { children: React.ReactNode }) {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isInitializing, setIsInitializing] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
-  const [products, setProducts] = useState<Product[]>(DEMO_PRODUCTS);
-  const [allUsers, setAllUsers] = useState<User[]>(DEMO_USERS);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [allUsers, setAllUsers] = useState<User[]>([]);
   const [savedProducts, setSavedProducts] = useState<SavedProduct[]>([]);
 
-  const login = useCallback(
-    (email: string, _password: string): boolean => {
-      const user = allUsers.find(
-        (u) => u.email.toLowerCase() === email.toLowerCase()
-      );
-      if (user) {
-        setCurrentUser(user);
-        setIsLoggedIn(true);
-        return true;
-      }
-      return false;
-    },
-    [allUsers]
-  );
-
-  const logout = useCallback(() => {
+  const clearSession = useCallback(async () => {
+    configureApiAuth(null);
+    await writeStoredToken(null);
     setCurrentUser(null);
-    setIsLoggedIn(false);
+    setProducts([]);
+    setAllUsers([]);
     setSavedProducts([]);
   }, []);
 
-  const register = useCallback(
-    (userData: Omit<User, "id" | "joinedDate" | "avatarColor">) => {
-      const colors = [
-        "#16A34A",
-        "#2563EB",
-        "#7C3AED",
-        "#DC2626",
-        "#EA580C",
-        "#0891B2",
-        "#DB2777",
-      ];
-      const newUser: User = {
-        ...userData,
-        id: `user-${Date.now()}`,
-        joinedDate: new Date().toISOString().split("T")[0],
-        avatarColor: colors[Math.floor(Math.random() * colors.length)],
-      };
-      setAllUsers((prev) => [...prev, newUser]);
-      setCurrentUser(newUser);
-      setIsLoggedIn(true);
-    },
-    []
-  );
-
-  const updateUser = useCallback(
-    (updates: Partial<Omit<User, "id" | "joinedDate">>) => {
-      if (!currentUser) return;
-      const updated = { ...currentUser, ...updates };
-      setCurrentUser(updated);
-      setAllUsers((prev) =>
-        prev.map((u) => (u.id === updated.id ? updated : u))
-      );
-    },
-    [currentUser]
-  );
-
-  const updatePassword = useCallback(
-    (_currentPassword: string, newPassword: string): boolean => {
-      if (!_currentPassword.trim() || !newPassword.trim()) return false;
-      return true; // mock – always succeeds in demo
-    },
-    []
-  );
-
-  const addProduct = useCallback(
-    (productData: Omit<Product, "id" | "createdAt">) => {
-      const newProduct: Product = {
-        ...productData,
-        id: `p-${Date.now()}`,
-        createdAt: new Date().toISOString().split("T")[0],
-      };
-      setProducts((prev) => [newProduct, ...prev]);
-    },
-    []
-  );
-
-  const updateProduct = useCallback(
-    (id: string, updates: Partial<Product>) => {
-      setProducts((prev) =>
-        prev.map((p) => (p.id === id ? { ...p, ...updates } : p))
-      );
-    },
-    []
-  );
-
-  const deleteProduct = useCallback((id: string) => {
-    setProducts((prev) => prev.filter((p) => p.id !== id));
+  const refreshMarketplace = useCallback(async () => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const [nextProducts, nextUsers, saved] = await Promise.all([api.products(), api.users(), api.saved()]);
+      setProducts(nextProducts);
+      setAllUsers(nextUsers);
+      const now = new Date().toISOString();
+      setSavedProducts(saved.map((product) => ({ productId: product.id, savedAt: now })));
+    } catch (nextError) {
+      setError(messageFrom(nextError));
+      throw nextError;
+    } finally {
+      setIsLoading(false);
+    }
   }, []);
 
-  const markSoldOut = useCallback((id: string) => {
-    setProducts((prev) =>
-      prev.map((p) =>
-        p.id === id ? { ...p, availability: "sold_out" as AvailabilityStatus, quantity: 0 } : p
-      )
-    );
-  }, []);
-
-  const getProductById = useCallback(
-    (id: string) => products.find((p) => p.id === id),
-    [products]
-  );
-
-  const getProductsBySupplier = useCallback(
-    (supplierId: string) => products.filter((p) => p.supplierId === supplierId),
-    [products]
-  );
-
-  const getProductsByCategory = useCallback(
-    (categoryId: string) => products.filter((p) => p.categoryId === categoryId),
-    [products]
-  );
-
-  const getProductsByName = useCallback(
-    (name: string) =>
-      products.filter((p) =>
-        p.name.toLowerCase().includes(name.toLowerCase())
-      ),
-    [products]
-  );
-
-  const getUserById = useCallback(
-    (id: string) => allUsers.find((u) => u.id === id),
-    [allUsers]
-  );
-
-  const toggleSaved = useCallback((productId: string) => {
-    setSavedProducts((prev) => {
-      const exists = prev.find((s) => s.productId === productId);
-      if (exists) {
-        return prev.filter((s) => s.productId !== productId);
+  useEffect(() => {
+    let active = true;
+    async function restoreSession() {
+      try {
+        const storedToken = await readStoredToken();
+        if (!storedToken || !active) return;
+        configureApiAuth(storedToken, clearSession);
+        const user = await api.me();
+        if (!active) return;
+        setCurrentUser(user);
+        try {
+          await refreshMarketplace();
+        } catch {
+          // Keep a valid restored session and let marketplace screens retry.
+        }
+      } catch {
+        if (active) await clearSession();
+      } finally {
+        if (active) setIsInitializing(false);
       }
-      return [
-        ...prev,
-        { productId, savedAt: new Date().toISOString() },
-      ];
-    });
+    }
+    configureApiAuth(null, clearSession);
+    restoreSession();
+    return () => { active = false; };
+  }, [clearSession, refreshMarketplace]);
+
+  const login = useCallback(async (usernameOrEmail: string, password: string) => {
+    setError(null);
+    const result = await api.login(usernameOrEmail, password);
+    configureApiAuth(result.token, clearSession);
+    await writeStoredToken(result.token);
+    setCurrentUser(result.user);
+    try {
+      await refreshMarketplace();
+    } catch {
+      // Keep the valid session; marketplace screens expose the retry state.
+    }
+    return result.user;
+  }, [clearSession, refreshMarketplace]);
+
+  const register = useCallback(async (input: RegisterInput) => {
+    await api.register(input);
+    return login(input.username, input.password);
+  }, [login]);
+
+  const updateUser = useCallback(async (updates: Partial<User>) => {
+    const locationKeys = ["location", "province", "latitude", "longitude"];
+    const onlyLocation = Object.keys(updates).every((key) => locationKeys.includes(key));
+    const updated = onlyLocation
+      ? await api.updateLocation({
+          location: updates.location ?? currentUser?.location ?? "",
+          province: updates.province ?? currentUser?.province ?? "",
+          latitude: updates.latitude ?? currentUser?.latitude ?? null,
+          longitude: updates.longitude ?? currentUser?.longitude ?? null,
+        })
+      : await api.updateProfile(updates);
+    setCurrentUser(updated);
+    setAllUsers((previous) => previous.map((user) => user.id === updated.id ? updated : user));
+    return updated;
+  }, [currentUser]);
+
+  const updatePassword = useCallback(async (currentPassword: string, newPassword: string, confirmPassword = newPassword) => {
+    const result = await api.changePassword(currentPassword, newPassword, confirmPassword);
+    return result.success;
   }, []);
 
-  const isSaved = useCallback(
-    (productId: string) =>
-      savedProducts.some((s) => s.productId === productId),
-    [savedProducts]
-  );
+  const addProduct = useCallback(async (input: ProductInput, image?: UploadAsset | null) => {
+    const product = await api.createProduct(input, image);
+    setProducts((previous) => [product, ...previous]);
+    return product;
+  }, []);
 
-  return (
-    <AppContext.Provider
-      value={{
-        isLoggedIn,
-        currentUser,
-        login,
-        logout,
-        register,
-        updateUser,
-        updatePassword,
-        products,
-        addProduct,
-        updateProduct,
-        deleteProduct,
-        markSoldOut,
-        getProductById,
-        getProductsBySupplier,
-        getProductsByCategory,
-        getProductsByName,
-        allUsers,
-        getUserById,
-        savedProducts,
-        toggleSaved,
-        isSaved,
-      }}
-    >
-      {children}
-    </AppContext.Provider>
-  );
+  const updateProduct = useCallback(async (id: string, updates: Partial<ProductInput>, image?: UploadAsset | null) => {
+    const product = await api.updateProduct(id, updates, image);
+    setProducts((previous) => previous.map((item) => item.id === id ? product : item));
+    return product;
+  }, []);
+
+  const deleteProduct = useCallback(async (id: string) => {
+    await api.deleteProduct(id);
+    setProducts((previous) => previous.filter((product) => product.id !== id));
+    setSavedProducts((previous) => previous.filter((saved) => saved.productId !== id));
+  }, []);
+
+  const markSoldOut = useCallback(async (id: string) => {
+    const product = await api.markSoldOut(id);
+    setProducts((previous) => previous.map((item) => item.id === id ? product : item));
+    return product;
+  }, []);
+
+  const toggleSaved = useCallback(async (productId: string) => {
+    const result = await api.toggleSaved(productId);
+    setSavedProducts((previous) => result.saved
+      ? [...previous.filter((saved) => saved.productId !== productId), { productId, savedAt: new Date().toISOString() }]
+      : previous.filter((saved) => saved.productId !== productId));
+    return result.saved;
+  }, []);
+
+  const value = useMemo<AppContextType>(() => ({
+    isInitializing,
+    isLoading,
+    error,
+    isLoggedIn: Boolean(currentUser),
+    currentUser,
+    login,
+    logout: clearSession,
+    register,
+    updateUser,
+    updatePassword,
+    products,
+    addProduct,
+    updateProduct,
+    deleteProduct,
+    markSoldOut,
+    getProductById: (id) => products.find((product) => product.id === id),
+    getProductsBySupplier: (supplierId) => products.filter((product) => product.supplierId === supplierId),
+    getProductsByCategory: (categoryId) => products.filter((product) => product.categoryId === categoryId),
+    getProductsByName: (name) => products.filter((product) => product.name.toLowerCase().includes(name.toLowerCase())),
+    allUsers,
+    getUserById: (id) => allUsers.find((user) => user.id === id),
+    savedProducts,
+    toggleSaved,
+    isSaved: (productId) => savedProducts.some((saved) => saved.productId === productId),
+    refreshMarketplace,
+  }), [
+    isInitializing, isLoading, error, currentUser, login, clearSession, register, updateUser,
+    updatePassword, products, addProduct, updateProduct, deleteProduct, markSoldOut, allUsers,
+    savedProducts, toggleSaved, refreshMarketplace,
+  ]);
+
+  return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 }

@@ -3,7 +3,7 @@ import { View, Text, ScrollView } from "react-native";
 import { useLocalSearchParams, router } from "expo-router";
 import { AppIcon } from "@/components/app-icon";
 import { AppContext } from "@/context/app-context";
-import { formatDate, formatPhone, getInitials } from "@/lib/helpers";
+import { formatDate, formatPhone } from "@/lib/helpers";
 import { ProductCard } from "@/components/product-card";
 import { ContactButtons } from "@/components/contact-buttons";
 import { EmptyState } from "@/components/empty-state";

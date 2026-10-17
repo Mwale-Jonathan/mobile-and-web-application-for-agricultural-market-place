@@ -9,8 +9,9 @@ export default function EditProfileScreen() {
   const [name, setName] = useState(currentUser?.name || '');
   const [email, setEmail] = useState(currentUser?.email || '');
   const [phone, setPhone] = useState(currentUser?.phone || '');
+  const [loading, setLoading] = useState(false);
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!name.trim()) {
       Alert.alert('Validation Error', 'Full name is required.');
       return;
@@ -24,15 +25,21 @@ export default function EditProfileScreen() {
       return;
     }
 
-    updateUser({
-      name: name.trim(),
-      email: email.trim(),
-      phone: phone.trim(),
-    });
-
-    Alert.alert('Success', 'Profile updated successfully!', [
-      { text: 'OK', onPress: () => router.back() },
-    ]);
+    setLoading(true);
+    try {
+      await updateUser({
+        name: name.trim(),
+        email: email.trim(),
+        phone: phone.replace(/\D/g, ''),
+      });
+      Alert.alert('Success', 'Profile updated successfully!', [
+        { text: 'OK', onPress: () => router.back() },
+      ]);
+    } catch (error) {
+      Alert.alert('Unable to update profile', error instanceof Error ? error.message : 'Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -76,7 +83,7 @@ export default function EditProfileScreen() {
         />
       </View>
 
-      <AppButton label="Save Changes" onPress={handleSave} className="mt-2" />
+      <AppButton label="Save Changes" onPress={handleSave} loading={loading} className="mt-2" />
     </ScrollView>
   );
 }

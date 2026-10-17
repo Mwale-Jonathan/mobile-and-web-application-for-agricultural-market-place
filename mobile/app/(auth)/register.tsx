@@ -16,10 +16,13 @@ import { LocationPickerModal, type LocationResult } from "@/components/LocationP
 
 export default function RegisterScreen() {
   const { register } = React.use(AppContext);
+  const [username, setUsername] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const [role, setRole] = useState<UserRole>("consumer");
   const [location, setLocation] = useState("");
   const [province, setProvince] = useState("Lusaka");
@@ -27,22 +30,36 @@ export default function RegisterScreen() {
   const [longitude, setLongitude] = useState<number | undefined>();
   const [pickerVisible, setPickerVisible] = useState(false);
 
-  const handleRegister = () => {
-    if (!name.trim() || !email.trim() || !phone.trim() || !password.trim()) {
+  const handleRegister = async () => {
+    if (!username.trim() || !name.trim() || !email.trim() || !phone.trim() || !password.trim()) {
       Alert.alert("Error", "Please fill in all required fields");
       return;
     }
-    register({
-      name: name.trim(),
-      email: email.trim(),
-      phone: phone.trim(),
-      role,
-      location: location.trim() || "Lusaka",
-      province: province || "Lusaka",
-      latitude,
-      longitude,
-    });
-    router.replace("/(tabs)/(home)");
+    if (password !== confirmPassword) {
+      Alert.alert("Error", "Passwords do not match");
+      return;
+    }
+    setLoading(true);
+    try {
+      await register({
+        username: username.trim(),
+        name: name.trim(),
+        email: email.trim(),
+        phone: phone.replace(/\D/g, ""),
+        password,
+        confirmPassword,
+        role,
+        location: location.trim() || "Lusaka",
+        province: province || "Lusaka",
+        latitude,
+        longitude,
+      });
+      router.replace("/(tabs)/(home)");
+    } catch (error) {
+      Alert.alert("Registration failed", error instanceof Error ? error.message : "Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleLocationPicked = (result: LocationResult) => {
@@ -109,6 +126,15 @@ export default function RegisterScreen() {
         {/* Form fields */}
         <View className="gap-4">
           <FormField
+            label="Username"
+            value={username}
+            onChangeText={setUsername}
+            placeholder="Letters and numbers only"
+            autoCapitalize="none"
+            required
+          />
+
+          <FormField
             label="Full Name"
             value={name}
             onChangeText={setName}
@@ -173,9 +199,19 @@ export default function RegisterScreen() {
             required
           />
 
+          <FormField
+            label="Confirm Password"
+            value={confirmPassword}
+            onChangeText={setConfirmPassword}
+            placeholder="Re-enter your password"
+            secureTextEntry
+            required
+          />
+
           <AppButton
             label="Create Account"
             onPress={handleRegister}
+            loading={loading}
             className="mt-2"
           />
 

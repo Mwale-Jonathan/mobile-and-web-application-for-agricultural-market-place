@@ -4,7 +4,6 @@ import { cn } from "@/lib/utils";
 import { Tabs } from "expo-router";
 import React from "react";
 import { Text, View } from "react-native";
-import { StatusBar } from "expo-status-bar";
 
 function TabIcon({ name, focused }: { name: AppIconName; focused: boolean }) {
     return (

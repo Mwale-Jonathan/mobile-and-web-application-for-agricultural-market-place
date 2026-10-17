@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import * as ImagePicker from "expo-image-picker";
+import { Image } from "expo-image";
 import {
   View,
   Text,
@@ -14,6 +16,8 @@ import { AppContext } from "@/context/app-context";
 import { Colors } from "@/constants";
 import { CATEGORIES } from "@/data/mock-data";
 import type { ProductUnit, AvailabilityStatus } from "@/types";
+import type { UploadAsset } from "@/lib/api";
+import { toUploadAsset } from "@/lib/image-upload";
 import { cn } from "@/lib/utils";
 
 const UNITS: ProductUnit[] = [
@@ -36,8 +40,25 @@ export default function CreateProductScreen() {
   const [quantity, setQuantity] = useState("");
   const [description, setDescription] = useState("");
   const [location, setLocation] = useState(currentUser?.location || "");
+  const [image, setImage] = useState<UploadAsset | null>(null);
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = () => {
+  const pickImage = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ["images"],
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 0.75,
+    });
+    if (result.canceled) return;
+    try {
+      setImage(toUploadAsset(result.assets[0]));
+    } catch (error) {
+      Alert.alert("Unsupported photo", error instanceof Error ? error.message : "Choose another image.");
+    }
+  };
+
+  const handleSubmit = async () => {
     if (!name.trim() || !categoryId || !price || !quantity) {
       Alert.alert(
         "Error",
@@ -45,25 +66,29 @@ export default function CreateProductScreen() {
       );
       return;
     }
-    addProduct({
-      name: name.trim(),
-      categoryId,
-      price: parseFloat(price),
-      unit,
-      quantity: parseInt(quantity, 10),
-      description: description.trim(),
-      imageUrl:
-        "https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=400&h=300&fit=crop",
-      supplierId: currentUser?.id || "",
-      location: location.trim() || currentUser?.location || "Lusaka",
-      province: currentUser?.province || "Lusaka",
-      latitude: -15.3875 + (Math.random() - 0.5) * 0.5,
-      longitude: 28.3228 + (Math.random() - 0.5) * 0.5,
-      availability: "available" as AvailabilityStatus,
-    });
-    Alert.alert("Success", "Product listed successfully!", [
-      { text: "OK", onPress: () => router.back() },
-    ]);
+    setLoading(true);
+    try {
+      await addProduct({
+        name: name.trim(),
+        categoryId,
+        price: parseFloat(price),
+        unit,
+        quantity: parseInt(quantity, 10),
+        description: description.trim(),
+        location: location.trim() || currentUser?.location || "Lusaka",
+        province: currentUser?.province || "Lusaka",
+        latitude: currentUser?.latitude ?? null,
+        longitude: currentUser?.longitude ?? null,
+        availability: "available" as AvailabilityStatus,
+      }, image);
+      Alert.alert("Success", "Product listed successfully!", [
+        { text: "OK", onPress: () => router.back() },
+      ]);
+    } catch (error) {
+      Alert.alert("Unable to list product", error instanceof Error ? error.message : "Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -73,19 +98,16 @@ export default function CreateProductScreen() {
       keyboardShouldPersistTaps="handled"
     >
       {/* Image placeholder */}
-      <Pressable className="mb-5 h-40 items-center justify-center rounded-[14px] border-2 border-dashed border-border bg-muted">
-        <AppIcon
-          name="camera-outline"
-          size={42}
-          color="#6B7280"
-          style={{ marginBottom: 8 }}
-        />
-        <Text className="text-[15px] font-semibold text-muted-foreground">
-          Add Product Photo
-        </Text>
-        <Text className="mt-1 text-[11px] text-muted-foreground">
-          Tap to upload (demo)
-        </Text>
+      <Pressable onPress={pickImage} className="mb-5 h-40 overflow-hidden items-center justify-center rounded-[14px] border-2 border-dashed border-border bg-muted">
+        {image ? (
+          <Image source={{ uri: image.uri }} style={{ width: "100%", height: "100%" }} contentFit="cover" />
+        ) : (
+          <>
+            <AppIcon name="camera-outline" size={42} color="#6B7280" style={{ marginBottom: 8 }} />
+            <Text className="text-[15px] font-semibold text-muted-foreground">Add Product Photo</Text>
+            <Text className="mt-1 text-[11px] text-muted-foreground">JPEG, PNG or WebP up to 5MB</Text>
+          </>
+        )}
       </Pressable>
 
       {/* Product Name */}
@@ -215,7 +237,7 @@ export default function CreateProductScreen() {
       />
 
       {/* Submit */}
-      <AppButton label="List Product" onPress={handleSubmit} />
+      <AppButton label="List Product" onPress={handleSubmit} loading={loading} />
     </ScrollView>
   );
 }
