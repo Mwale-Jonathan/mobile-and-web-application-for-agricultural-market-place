@@ -1,6 +1,6 @@
 import { api, configureApiAuth, type ProductInput, type RegisterInput, type UploadAsset } from "@/lib/api";
 import { readStoredToken, writeStoredToken } from "@/lib/token-storage";
-import type { Product, SavedProduct, User } from "@/types";
+import type { Category, Product, SavedProduct, User } from "@/types";
 import React, { createContext, useCallback, useEffect, useMemo, useState } from "react";
 
 interface AppContextType {
@@ -15,6 +15,7 @@ interface AppContextType {
   updateUser: (updates: Partial<User>) => Promise<User>;
   updatePassword: (currentPassword: string, newPassword: string, confirmPassword?: string) => Promise<boolean>;
   products: Product[];
+  categories: Category[];
   addProduct: (product: ProductInput, image?: UploadAsset | null) => Promise<Product>;
   updateProduct: (id: string, updates: Partial<ProductInput>, image?: UploadAsset | null) => Promise<Product>;
   deleteProduct: (id: string) => Promise<void>;
@@ -43,6 +44,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const [error, setError] = useState<string | null>(null);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [products, setProducts] = useState<Product[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [allUsers, setAllUsers] = useState<User[]>([]);
   const [savedProducts, setSavedProducts] = useState<SavedProduct[]>([]);
 
@@ -51,6 +53,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     await writeStoredToken(null);
     setCurrentUser(null);
     setProducts([]);
+    setCategories([]);
     setAllUsers([]);
     setSavedProducts([]);
   }, []);
@@ -59,7 +62,13 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     setIsLoading(true);
     setError(null);
     try {
-      const [nextProducts, nextUsers, saved] = await Promise.all([api.products(), api.users(), api.saved()]);
+      const [nextCategories, nextProducts, nextUsers, saved] = await Promise.all([
+        api.categories(),
+        api.products(),
+        api.users(),
+        api.saved(),
+      ]);
+      setCategories(nextCategories);
       setProducts(nextProducts);
       setAllUsers(nextUsers);
       const now = new Date().toISOString();
@@ -182,6 +191,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     updateUser,
     updatePassword,
     products,
+    categories,
     addProduct,
     updateProduct,
     deleteProduct,
@@ -198,7 +208,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     refreshMarketplace,
   }), [
     isInitializing, isLoading, error, currentUser, login, clearSession, register, updateUser,
-    updatePassword, products, addProduct, updateProduct, deleteProduct, markSoldOut, allUsers,
+    updatePassword, products, categories, addProduct, updateProduct, deleteProduct, markSoldOut, allUsers,
     savedProducts, toggleSaved, refreshMarketplace,
   ]);
 

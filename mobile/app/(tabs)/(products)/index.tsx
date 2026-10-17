@@ -8,13 +8,12 @@ import { EmptyState } from "@/components/empty-state";
 import { ProductCard } from "@/components/product-card";
 import { Colors } from "@/constants";
 import { AppContext } from "@/context/app-context";
-import { CATEGORIES } from "@/data/mock-data";
 import { cn } from "@/lib/utils";
 
 type SortOption = "newest" | "price_low" | "price_high" | "name";
 
 export default function ProductListScreen() {
-    const { products, allUsers, isLoading, error, refreshMarketplace } = useContext(AppContext);
+    const { products, categories, allUsers, isLoading, error, refreshMarketplace } = useContext(AppContext);
     const params = useLocalSearchParams<{ category?: string }>();
 
     const [search, setSearch] = useState("");
@@ -107,7 +106,7 @@ export default function ProductListScreen() {
             {/* Category Chips */}
             <View className="mb-2">
                 <CategoryChips
-                    categories={CATEGORIES}
+                    categories={categories}
                     selected={selectedCategory}
                     onSelect={setSelectedCategory}
                 />

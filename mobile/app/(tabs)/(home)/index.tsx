@@ -3,7 +3,6 @@ import { View, Text, ScrollView, Pressable } from "react-native";
 import { Link, router } from "expo-router";
 import { AppIcon, type AppIconName } from "@/components/app-icon";
 import { AppContext } from "@/context/app-context";
-import { CATEGORIES } from "@/data/mock-data";
 import { ProductCard } from "@/components/product-card";
 
 type QuickLink = {
@@ -13,7 +12,7 @@ type QuickLink = {
 };
 
 export default function HomeScreen() {
-    const { currentUser, products, allUsers, error, refreshMarketplace } = React.use(AppContext);
+    const { currentUser, products, categories, allUsers, error, refreshMarketplace } = React.use(AppContext);
     const isFarmer = currentUser?.role === "farmer";
 
     const featuredProducts = products
@@ -140,7 +139,7 @@ export default function HomeScreen() {
                     showsHorizontalScrollIndicator={false}
                     contentContainerClassName="gap-3 px-4"
                 >
-                    {CATEGORIES.map((cat) => (
+                    {categories.map((cat) => (
                         <Pressable
                             key={cat.id}
                             onPress={() =>

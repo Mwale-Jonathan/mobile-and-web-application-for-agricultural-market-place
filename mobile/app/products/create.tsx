@@ -14,7 +14,6 @@ import { AppIcon } from "@/components/app-icon";
 import { AppButton, FormField } from "@/components/ui";
 import { AppContext } from "@/context/app-context";
 import { Colors } from "@/constants";
-import { CATEGORIES } from "@/data/mock-data";
 import type { ProductUnit, AvailabilityStatus } from "@/types";
 import type { UploadAsset } from "@/lib/api";
 import { toUploadAsset } from "@/lib/image-upload";
@@ -32,7 +31,7 @@ const UNITS: ProductUnit[] = [
 ];
 
 export default function CreateProductScreen() {
-  const { currentUser, addProduct } = React.use(AppContext);
+  const { currentUser, categories, addProduct } = React.use(AppContext);
   const [name, setName] = useState("");
   const [categoryId, setCategoryId] = useState("");
   const [price, setPrice] = useState("");
@@ -125,7 +124,7 @@ export default function CreateProductScreen() {
         Category *
       </Text>
       <View className="mb-4 flex-row flex-wrap gap-2">
-        {CATEGORIES.map((cat) => (
+        {categories.map((cat) => (
           <Pressable
             key={cat.id}
             onPress={() => setCategoryId(cat.id)}

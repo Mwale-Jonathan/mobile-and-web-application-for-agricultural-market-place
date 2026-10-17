@@ -36,6 +36,21 @@ test("authenticated Express requests include the bearer token", async () => {
   expect((options.headers as Headers).get("Authorization")).toBe("Bearer jwt-token");
 });
 
+test("categories are loaded from the public backend catalogue", async () => {
+  configureApiAuth("jwt-token");
+  fetchMock.mockResolvedValue(expressResponse(200, [
+    { id: "grains", name: "Grains", icon: "🌾", description: "Maize", color: "#F59E0B" },
+  ]));
+
+  await expect(api.categories()).resolves.toEqual([
+    expect.objectContaining({ id: "grains", name: "Grains" }),
+  ]);
+
+  const [url, options] = fetchMock.mock.calls[0] as [string, RequestInit];
+  expect(url).toMatch(/\/api\/categories$/);
+  expect((options.headers as Headers).has("Authorization")).toBe(false);
+});
+
 test("an authenticated 401 invokes the session invalidation handler", async () => {
   const onUnauthorized = jest.fn();
   configureApiAuth("expired", onUnauthorized);

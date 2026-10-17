@@ -1,42 +1,4 @@
-import type { Category, Product, User } from "@/types";
-
-export const CATEGORIES: Category[] = [
-  {
-    id: "grains",
-    name: "Grains",
-    icon: "🌾",
-    description: "Maize, rice, wheat, sorghum, millet",
-    color: "#F59E0B",
-  },
-  {
-    id: "vegetables",
-    name: "Vegetables",
-    icon: "🥬",
-    description: "Tomatoes, onions, cabbage, rape, peppers",
-    color: "#16A34A",
-  },
-  {
-    id: "fruits",
-    name: "Fruits",
-    icon: "🍊",
-    description: "Bananas, oranges, mangoes, avocados",
-    color: "#F97316",
-  },
-  {
-    id: "legumes",
-    name: "Legumes",
-    icon: "🫘",
-    description: "Beans, groundnuts, soybeans, cowpeas",
-    color: "#92400E",
-  },
-  {
-    id: "tubers",
-    name: "Tubers",
-    icon: "🥔",
-    description: "Cassava, sweet potatoes, potatoes, yams",
-    color: "#A16207",
-  },
-];
+import type { Product, User } from "@/types";
 
 export const DEMO_USERS: User[] = [
   {

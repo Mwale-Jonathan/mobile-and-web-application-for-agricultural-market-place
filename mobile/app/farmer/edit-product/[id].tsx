@@ -1,6 +1,5 @@
 import { EmptyState } from "@/components/empty-state";
 import { AppContext } from "@/context/app-context";
-import { CATEGORIES } from "@/data/mock-data";
 import { cn } from "@/lib/utils";
 import type { AvailabilityStatus, ProductUnit } from "@/types";
 import { router, useLocalSearchParams } from "expo-router";
@@ -37,7 +36,7 @@ const STATUSES: { value: AvailabilityStatus; label: string }[] = [
 
 export default function EditProductScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const { getProductById, updateProduct } = React.use(AppContext);
+  const { categories, getProductById, updateProduct } = React.use(AppContext);
   const product = getProductById(id);
 
   const [name, setName] = useState("");
@@ -145,7 +144,7 @@ export default function EditProductScreen() {
         Category
       </Text>
       <View className="mb-4 flex-row flex-wrap gap-2">
-        {CATEGORIES.map((cat) => (
+        {categories.map((cat) => (
           <Pressable
             key={cat.id}
             onPress={() => setCategoryId(cat.id)}

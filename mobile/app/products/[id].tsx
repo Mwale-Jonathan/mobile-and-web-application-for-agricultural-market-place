@@ -5,7 +5,6 @@ import { ContactButtons } from "@/components/contact-buttons";
 import { EmptyState } from "@/components/empty-state";
 import { AvatarInitials } from "@/components/ui";
 import { AppContext } from "@/context/app-context";
-import { CATEGORIES } from "@/data/mock-data";
 import { formatDate, formatPrice } from "@/lib/helpers";
 import { cn } from "@/lib/utils";
 import { api } from "@/lib/api";
@@ -19,6 +18,7 @@ export default function ProductDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const {
     getProductById,
+    categories,
     getUserById,
     allUsers,
     toggleSaved,
@@ -52,7 +52,7 @@ export default function ProductDetailScreen() {
   }
 
   const supplier = getUserById(product.supplierId);
-  const category = CATEGORIES.find((c) => c.id === product.categoryId);
+  const category = categories.find((c) => c.id === product.categoryId);
   const saved = isSaved(product.id);
 
   const handleGetDirections = async () => {
